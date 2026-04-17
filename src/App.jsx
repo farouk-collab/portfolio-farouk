@@ -288,7 +288,7 @@ export default function App() {
             </div>
           </Motion.div>
 
-          <motion.div
+          <Motion.div
             initial={{ opacity: 0, y: 32 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.12, ease: "easeOut" }}
@@ -335,7 +335,7 @@ export default function App() {
                 </div>
               </div>
             </GlassCard>
-          </motion.div>
+          </Motion.div>
         </section>
 
         <section className="grid gap-5 py-8 md:grid-cols-3">
