@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, motion as Motion } from "framer-motion";
 import {
   ArrowUpRight,
   BriefcaseBusiness,
@@ -207,7 +207,7 @@ export default function App() {
 
         <AnimatePresence>
           {menuOpen ? (
-            <motion.div
+            <Motion.div
               initial={{ opacity: 0, y: -16 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -16 }}
@@ -226,14 +226,14 @@ export default function App() {
                   </a>
                 ))}
               </div>
-            </motion.div>
+            </Motion.div>
           ) : null}
         </AnimatePresence>
       </header>
 
       <main id="top" className="mx-auto max-w-7xl px-6 pb-20 pt-8">
         <section className="grid gap-8 py-10 lg:grid-cols-[1.2fr_0.8fr] lg:items-center lg:py-16">
-          <motion.div
+          <Motion.div
             initial={{ opacity: 0, y: 28 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.65, ease: "easeOut" }}
@@ -286,7 +286,7 @@ export default function App() {
                 </GlassCard>
               ))}
             </div>
-          </motion.div>
+          </Motion.div>
 
           <motion.div
             initial={{ opacity: 0, y: 32 }}
@@ -342,7 +342,7 @@ export default function App() {
           {highlights.map((item, index) => {
             const Icon = item.icon;
             return (
-              <motion.div
+              <Motion.div
                 key={item.title}
                 initial={{ opacity: 0, y: 24 }}
                 whileInView={{ opacity: 1, y: 0 }}
@@ -356,7 +356,7 @@ export default function App() {
                   <h3 className="mt-5 text-xl font-semibold">{item.title}</h3>
                   <p className="mt-3 leading-7 text-zinc-300">{item.text}</p>
                 </GlassCard>
-              </motion.div>
+              </Motion.div>
             );
           })}
         </section>
@@ -396,7 +396,7 @@ export default function App() {
 
           <div className="mt-10 grid gap-6 lg:grid-cols-3">
             {projects.map((project, index) => (
-              <motion.article
+              <Motion.article
                 key={project.title}
                 initial={{ opacity: 0, y: 24 }}
                 whileInView={{ opacity: 1, y: 0 }}
@@ -424,7 +424,7 @@ export default function App() {
                     ))}
                   </div>
                 </GlassCard>
-              </motion.article>
+              </Motion.article>
             ))}
           </div>
         </section>
@@ -549,7 +549,7 @@ export default function App() {
 
       <AnimatePresence>
         {showTop ? (
-          <motion.a
+          <Motion.a
             href="#top"
             initial={{ opacity: 0, y: 18 }}
             animate={{ opacity: 1, y: 0 }}
@@ -559,7 +559,7 @@ export default function App() {
           >
             Remonter
             <ArrowUpRight size={16} className="-rotate-45" />
-          </motion.a>
+          </Motion.a>
         ) : null}
       </AnimatePresence>
     </div>
