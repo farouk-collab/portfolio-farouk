@@ -42,24 +42,57 @@ const highlights = [
   },
 ];
 
-const projects = [
+const webProjects = [
   {
-    title: "Plateforme de vote distribuee",
+    title: "SUPCONTENT Music",
     description:
-      "Architecture microservices avec file de traitement, persistance PostgreSQL et conteneurisation Docker pour un pipeline robuste.",
-    tech: ["Python", "Node.js", "Redis", "PostgreSQL", "Docker"],
+      "Reseau social musical de niche avec partage de contenus, experience communautaire et logique full-stack orientee produit.",
+    tech: ["JavaScript", "Node.js", "API REST", "PostgreSQL", "JWT"],
+    category: "Web app",
+    repo: "https://github.com/farouk-collab/supcontent-music",
+    mediaStatus: "Apercu a ajouter",
   },
   {
-    title: "Plateforme musicale sociale",
+    title: "Peps Gallery",
     description:
-      "Application full-stack en TypeScript avec API REST, authentification JWT/OAuth2 et integrations Spotify/YouTube.",
-    tech: ["Node.js", "TypeScript", "PostgreSQL", "JWT", "OAuth2"],
+      "Plateforme e-commerce orientee quincaillerie et mobilier, pensee pour un catalogue structure, un panier et une experience plus commerciale.",
+    tech: ["TypeScript", "E-commerce", "UI produit", "Panier", "Catalogue"],
+    category: "Web app",
+    repo: "https://github.com/farouk-collab/Peps-Gallery",
+    mediaStatus: "Apercu a ajouter",
   },
+  {
+    title: "Hotel Le Morphee",
+    description:
+      "Site vitrine d'etablissement hotelier avec presentation des chambres, espaces evenementiels et services dans un rendu immersif.",
+    tech: ["JavaScript", "Site vitrine", "UI immersive", "Video preview"],
+    category: "Web app",
+    repo: "https://github.com/farouk-collab/H-tel-Le-Morph-e",
+    mediaStatus: "Video disponible",
+  },
+];
+
+const securityProjects = [
   {
     title: "Infrastructure virtualisee Proxmox",
     description:
-      "Mise en place d'une infrastructure Linux avec sauvegardes automatisees, partage reseau Samba et logique d'exploitation durable.",
+      "Mise en place d'une infrastructure virtualisee avec gestion des services, segmentation logique, sauvegardes et exploitation Linux.",
     tech: ["Proxmox", "Linux", "Samba", "BorgBackup"],
+    category: "Infra / DevOps",
+  },
+  {
+    title: "Plateforme de vote distribuee",
+    description:
+      "Architecture microservices avec file de traitement, persistance PostgreSQL et conteneurisation Docker pour un pipeline robuste et observable.",
+    tech: ["Python", "Node.js", "Redis", "PostgreSQL", "Docker"],
+    category: "Architecture distribuee",
+  },
+  {
+    title: "Travaux securite & audit",
+    description:
+      "Laboratoires, analyses et exercices autour de la securisation reseau, des API et des environnements systeme. Pas de visuel public pour rester propre et responsable.",
+    tech: ["Wireshark", "Hardening", "Analyse reseau", "Securite API"],
+    category: "Securite",
   },
 ];
 
@@ -177,6 +210,8 @@ export default function App() {
 
   const cvImage = "/cv/cv-farouk.jpg";
   const cvFile = "/cv/cv-farouk.pdf";
+  const hotelVideo = new URL("./hotel-le-morphée/hotel-le-morphée.mp4", import.meta.url).href;
+  const githubProfile = "https://github.com/farouk-collab";
 
   return (
     <div className="min-h-screen bg-[#050816] text-white selection:bg-cyan-400/30 selection:text-white">
@@ -466,44 +501,157 @@ export default function App() {
         <section id="projects" className="py-14">
           <SectionTitle
             eyebrow="Projets"
-            title="Des projets qui montrent une logique d'architecture, pas juste une maquette."
-            description="Chaque projet combine implementation, outils concrets et reflexion technique autour du deploiement ou de l'infrastructure."
+            title="Des projets web demonstrables, plus une partie securite / DevOps plus reservee."
+            description="Les projets web montrent un apercu concret quand un media est disponible. Les projets securite et infra sont presents de facon plus professionnelle, sans exposer de visuels sensibles."
           />
 
-          <div className="mt-10 grid gap-6 lg:grid-cols-3">
-            {projects.map((project, index) => (
-              <Motion.article
-                key={project.title}
-                initial={{ opacity: 0, y: 24 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, amount: 0.2 }}
-                transition={{ duration: 0.45, delay: index * 0.08 }}
-                whileHover={{ y: -10, rotateX: 8, rotateY: index % 2 === 0 ? -8 : 8, scale: 1.02 }}
-                className="[perspective:1400px]"
-              >
-                <GlassCard className="flex h-full flex-col p-7 [transform-style:preserve-3d]">
-                  <div className="flex items-start justify-between gap-4">
-                    <h3 className="text-2xl font-semibold leading-tight text-white">
-                      {project.title}
-                    </h3>
-                    <span className="rounded-full border border-cyan-400/20 bg-cyan-400/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.24em] text-cyan-200">
-                      Cas reel
-                    </span>
-                  </div>
-                  <p className="mt-4 flex-1 leading-7 text-zinc-300">{project.description}</p>
-                  <div className="mt-6 flex flex-wrap gap-2">
-                    {project.tech.map((tech) => (
-                      <span
-                        key={tech}
-                        className="rounded-full border border-white/10 bg-black/20 px-3 py-2 text-sm text-zinc-200"
-                      >
-                        {tech}
-                      </span>
-                    ))}
-                  </div>
-                </GlassCard>
-              </Motion.article>
-            ))}
+          <div className="mt-10 grid gap-8 xl:grid-cols-[1.35fr_0.65fr]">
+            <div>
+              <div className="mb-5 flex items-center justify-between gap-4">
+                <h3 className="text-xl font-semibold text-white">Projets web avec apercus</h3>
+                <a
+                  href={githubProfile}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex items-center gap-2 rounded-full border border-cyan-400/20 bg-cyan-400/10 px-4 py-2 text-sm font-medium text-cyan-100 transition hover:bg-cyan-400/15"
+                >
+                  Voir d'autres projets sur GitHub
+                  <ArrowUpRight size={16} />
+                </a>
+              </div>
+
+              <div className="grid gap-6 lg:grid-cols-2">
+                {webProjects.map((project, index) => (
+                  <Motion.article
+                    key={project.title}
+                    initial={{ opacity: 0, y: 24 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true, amount: 0.2 }}
+                    transition={{ duration: 0.45, delay: index * 0.08 }}
+                    whileHover={{
+                      y: -10,
+                      rotateX: 8,
+                      rotateY: index % 2 === 0 ? -8 : 8,
+                      scale: 1.02,
+                    }}
+                    className="[perspective:1400px]"
+                  >
+                    <GlassCard className="flex h-full flex-col overflow-hidden p-4 [transform-style:preserve-3d] md:p-5">
+                      <div className="relative mb-5 overflow-hidden rounded-[1.5rem] border border-white/10 bg-[#07111d]">
+                        {project.title === "Hotel Le Morphee" ? (
+                          <video
+                            src={hotelVideo}
+                            className="aspect-video w-full object-cover"
+                            autoPlay
+                            muted
+                            loop
+                            playsInline
+                            controls
+                          />
+                        ) : (
+                          <div className="flex aspect-video items-center justify-center bg-[radial-gradient(circle_at_top,rgba(56,189,248,0.14),transparent_40%),linear-gradient(180deg,#09101a_0%,#07111d_100%)] px-6 text-center">
+                            <div>
+                              <p className="text-xs font-semibold uppercase tracking-[0.24em] text-cyan-300/80">
+                                Media
+                              </p>
+                              <p className="mt-3 text-lg font-semibold text-white">
+                                {project.mediaStatus}
+                              </p>
+                              <p className="mt-2 text-sm leading-6 text-zinc-400">
+                                Ajoute ici une video ou des captures pour montrer rapidement
+                                l'interface du projet.
+                              </p>
+                            </div>
+                          </div>
+                        )}
+                      </div>
+
+                      <div className="flex items-start justify-between gap-4">
+                        <div>
+                          <span className="rounded-full border border-cyan-400/20 bg-cyan-400/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.24em] text-cyan-200">
+                            {project.category}
+                          </span>
+                          <h3 className="mt-4 text-2xl font-semibold leading-tight text-white">
+                            {project.title}
+                          </h3>
+                        </div>
+                      </div>
+                      <p className="mt-4 flex-1 leading-7 text-zinc-300">{project.description}</p>
+                      <div className="mt-6 flex flex-wrap gap-2">
+                        {project.tech.map((tech) => (
+                          <span
+                            key={tech}
+                            className="rounded-full border border-white/10 bg-black/20 px-3 py-2 text-sm text-zinc-200"
+                          >
+                            {tech}
+                          </span>
+                        ))}
+                      </div>
+                      <div className="mt-6">
+                        <a
+                          href={project.repo}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="inline-flex items-center gap-2 text-sm font-medium text-cyan-200 transition hover:text-cyan-100"
+                        >
+                          Voir le repo GitHub
+                          <ArrowUpRight size={16} />
+                        </a>
+                      </div>
+                    </GlassCard>
+                  </Motion.article>
+                ))}
+              </div>
+            </div>
+
+            <div>
+              <div className="mb-5">
+                <h3 className="text-xl font-semibold text-white">Securite / DevOps</h3>
+                <p className="mt-2 text-sm leading-6 text-zinc-400">
+                  Cette partie met en avant la logique technique sans exposer de contenus
+                  sensibles ou de demonstrations inappropriees.
+                </p>
+              </div>
+
+              <div className="grid gap-5">
+                {securityProjects.map((project, index) => (
+                  <Motion.article
+                    key={project.title}
+                    initial={{ opacity: 0, y: 24 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true, amount: 0.2 }}
+                    transition={{ duration: 0.45, delay: index * 0.08 }}
+                  >
+                    <GlassCard className="p-6">
+                      <div className="flex items-start justify-between gap-4">
+                        <div>
+                          <span className="rounded-full border border-white/10 bg-white/[0.04] px-3 py-1 text-xs font-semibold uppercase tracking-[0.24em] text-zinc-300">
+                            {project.category}
+                          </span>
+                          <h3 className="mt-4 text-xl font-semibold text-white">
+                            {project.title}
+                          </h3>
+                        </div>
+                        <div className="rounded-2xl border border-cyan-400/20 bg-cyan-400/10 p-3 text-cyan-200">
+                          <ShieldCheck size={18} />
+                        </div>
+                      </div>
+                      <p className="mt-4 leading-7 text-zinc-300">{project.description}</p>
+                      <div className="mt-5 flex flex-wrap gap-2">
+                        {project.tech.map((tech) => (
+                          <span
+                            key={tech}
+                            className="rounded-full border border-cyan-400/15 bg-cyan-400/10 px-3 py-2 text-sm text-cyan-50"
+                          >
+                            {tech}
+                          </span>
+                        ))}
+                      </div>
+                    </GlassCard>
+                  </Motion.article>
+                ))}
+              </div>
+            </div>
           </div>
         </section>
 
