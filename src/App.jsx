@@ -126,6 +126,13 @@ const contactLinks = [
   },
 ];
 
+const orbitBadges = [
+  { label: "Docker", className: "left-[6%] top-[16%]" },
+  { label: "Cloud", className: "right-[10%] top-[14%]" },
+  { label: "CI/CD", className: "left-[14%] bottom-[18%]" },
+  { label: "API REST", className: "right-[6%] bottom-[20%]" },
+];
+
 function SectionTitle({ eyebrow, title, description }) {
   return (
     <div className="max-w-2xl">
@@ -158,6 +165,8 @@ export default function App() {
   const heroGlowY = useTransform(scrollYProgress, [0, 0.4], [0, -80]);
   const heroCardY = useTransform(scrollYProgress, [0, 0.4], [0, -28]);
   const heroCardRotate = useTransform(scrollYProgress, [0, 0.4], [0, -3]);
+  const heroOrbY = useTransform(scrollYProgress, [0, 0.4], [0, -65]);
+  const heroLineScale = useTransform(scrollYProgress, [0, 0.35], [1, 1.18]);
 
   useEffect(() => {
     const onScroll = () => setShowTop(window.scrollY > 520);
@@ -181,6 +190,11 @@ export default function App() {
           className="absolute right-[-5rem] top-[8rem] h-80 w-80 rounded-full bg-blue-500/14 blur-3xl"
         />
         <div className="absolute bottom-[-8rem] left-1/3 h-96 w-96 rounded-full bg-sky-900/25 blur-3xl" />
+        <Motion.div
+          style={{ scale: heroLineScale }}
+          className="absolute left-1/2 top-[-12%] h-[44rem] w-[44rem] -translate-x-1/2 rounded-full border border-cyan-400/10"
+        />
+        <div className="absolute left-1/2 top-[8%] h-[28rem] w-[70rem] -translate-x-1/2 bg-[radial-gradient(circle,rgba(56,189,248,0.08)_0%,rgba(5,8,22,0)_60%)]" />
       </div>
 
       <header className="sticky top-0 z-50 border-b border-white/8 bg-[#050816]/75 backdrop-blur-xl">
@@ -308,10 +322,32 @@ export default function App() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.12, ease: "easeOut" }}
             whileHover={{ rotateX: 10, rotateY: -12, y: -10, scale: 1.01 }}
-            className="[transform-style:preserve-3d]"
+            className="relative min-h-[34rem] [transform-style:preserve-3d]"
           >
+            <Motion.div
+              style={{ y: heroOrbY }}
+              className="absolute inset-0 hidden lg:block"
+            >
+              <div className="absolute inset-[8%] rounded-full border border-cyan-400/10" />
+              <div className="absolute inset-[18%] rounded-full border border-blue-400/10" />
+              <div className="absolute left-1/2 top-1/2 h-[20rem] w-[20rem] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(circle,rgba(56,189,248,0.18),rgba(59,130,246,0.04)_45%,transparent_72%)] blur-2xl" />
+              {orbitBadges.map((badge, index) => (
+                <Motion.div
+                  key={badge.label}
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ delay: 0.35 + index * 0.08, duration: 0.4 }}
+                  whileHover={{ scale: 1.06, y: -4 }}
+                  className={`absolute ${badge.className} rounded-full border border-cyan-300/15 bg-[#081220]/80 px-4 py-2 text-xs font-semibold uppercase tracking-[0.24em] text-cyan-100 shadow-[0_18px_35px_rgba(0,0,0,0.35)] backdrop-blur-xl`}
+                >
+                  {badge.label}
+                </Motion.div>
+              ))}
+            </Motion.div>
+
             <GlassCard className="relative overflow-hidden p-7">
               <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(56,189,248,0.28),transparent_30%),radial-gradient(circle_at_bottom_left,rgba(59,130,246,0.20),transparent_35%)]" />
+              <div className="absolute inset-x-10 top-0 h-px bg-gradient-to-r from-transparent via-cyan-300/70 to-transparent" />
               <div className="relative">
                 <div className="flex items-center justify-between">
                   <div>
@@ -328,6 +364,29 @@ export default function App() {
                 </div>
 
                 <div className="mt-8 grid gap-4">
+                  <div className="grid gap-4 md:grid-cols-[1.15fr_0.85fr]">
+                    <GlassCard className="p-5">
+                      <p className="text-sm text-zinc-400">Cap actuel</p>
+                      <p className="mt-2 text-3xl font-semibold tracking-tight text-white">
+                        Infra + App + Deploy
+                      </p>
+                      <p className="mt-3 text-sm leading-6 text-zinc-300">
+                        Une vision de bout en bout, de la logique metier jusqu'au service en ligne.
+                      </p>
+                    </GlassCard>
+                    <GlassCard className="flex flex-col justify-between p-5">
+                      <div>
+                        <p className="text-sm text-zinc-400">Focus</p>
+                        <p className="mt-2 text-lg font-semibold text-white">
+                          DevOps / Cloud
+                        </p>
+                      </div>
+                      <div className="mt-4 h-2 rounded-full bg-white/8">
+                        <div className="h-2 w-4/5 rounded-full bg-gradient-to-r from-cyan-300 via-sky-400 to-blue-500" />
+                      </div>
+                    </GlassCard>
+                  </div>
+
                   <GlassCard className="p-5">
                     <p className="text-sm text-zinc-400">Positionnement</p>
                     <p className="mt-2 text-lg font-semibold">Full Stack, systemes, reseaux</p>
