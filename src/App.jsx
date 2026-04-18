@@ -50,6 +50,7 @@ const webProjects = [
     tech: ["JavaScript", "Node.js", "API REST", "PostgreSQL", "JWT"],
     category: "Web app",
     repo: "https://github.com/farouk-collab/supcontent-music",
+    mediaFolder: "supcontent",
     mediaStatus: "Apercu a ajouter",
   },
   {
@@ -59,6 +60,7 @@ const webProjects = [
     tech: ["TypeScript", "E-commerce", "UI produit", "Panier", "Catalogue"],
     category: "Web app",
     repo: "https://github.com/farouk-collab/Peps-Gallery",
+    mediaFolder: "peps-gallery",
     mediaStatus: "Apercu a ajouter",
   },
   {
@@ -68,6 +70,7 @@ const webProjects = [
     tech: ["JavaScript", "Site vitrine", "UI immersive", "Video preview"],
     category: "Web app",
     repo: "https://github.com/farouk-collab/H-tel-Le-Morph-e",
+    mediaFolder: "hotel-le-morphée",
     mediaStatus: "Video disponible",
   },
 ];
@@ -166,6 +169,26 @@ const orbitBadges = [
   { label: "API REST", className: "right-[6%] bottom-[20%]" },
 ];
 
+const projectMediaFiles = import.meta.glob(
+  "./{supcontent,peps-gallery,hotel-le-morphée}/*.{png,jpg,jpeg,webp,mp4}",
+  {
+    eager: true,
+    import: "default",
+  },
+);
+
+function collectProjectMedia(folderName) {
+  return Object.entries(projectMediaFiles)
+    .filter(([path]) => path.startsWith(`./${folderName}/`))
+    .map(([path, source]) => ({
+      path,
+      source,
+      type: path.endsWith(".mp4") ? "video" : "image",
+      name: path.split("/").pop(),
+    }))
+    .sort((a, b) => a.name.localeCompare(b.name));
+}
+
 function SectionTitle({ eyebrow, title, description }) {
   return (
     <div className="max-w-2xl">
@@ -211,6 +234,20 @@ export default function App() {
   const cvFile = "/cv/cv-farouk.pdf";
   const hotelVideo = new URL("./hotel-le-morphée/hotel-le-morphée.mp4", import.meta.url).href;
   const githubProfile = "https://github.com/farouk-collab";
+  const webProjectsWithMedia = webProjects.map((project) => {
+    const media = collectProjectMedia(project.mediaFolder);
+    const preview =
+      media[0] ??
+      (project.title === "Hotel Le Morphee"
+        ? { source: hotelVideo, type: "video", name: "hotel-le-morphee.mp4" }
+        : null);
+
+    return {
+      ...project,
+      media,
+      preview,
+    };
+  });
 
   return (
     <div className="min-h-screen bg-[#050816] text-white selection:bg-cyan-400/30 selection:text-white">
@@ -520,7 +557,7 @@ export default function App() {
               </div>
 
               <div className="grid gap-6 lg:grid-cols-2">
-                {webProjects.map((project, index) => (
+                {webProjectsWithMedia.map((project, index) => (
                   <Motion.article
                     key={project.title}
                     initial={{ opacity: 0, y: 24 }}
@@ -538,16 +575,25 @@ export default function App() {
                     <GlassCard className="relative flex h-full flex-col overflow-hidden p-4 [transform-style:preserve-3d] md:p-5">
                       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(56,189,248,0.16),transparent_28%),radial-gradient(circle_at_bottom_left,rgba(59,130,246,0.12),transparent_35%)] opacity-0 transition duration-300 group-hover:opacity-100" />
                       <div className="relative mb-5 overflow-hidden rounded-[1.5rem] border border-white/10 bg-[#07111d] shadow-[0_18px_40px_rgba(0,0,0,0.35)]">
-                        {project.title === "Hotel Le Morphee" ? (
+                        {project.preview?.type === "video" ? (
                           <div className="relative">
                             <video
-                              src={hotelVideo}
+                              src={project.preview.source}
                               className="aspect-video w-full object-cover transition duration-500 group-hover:scale-[1.03]"
                               autoPlay
                               muted
                               loop
                               playsInline
                               controls
+                            />
+                            <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#050816]/70 via-transparent to-transparent" />
+                          </div>
+                        ) : project.preview?.type === "image" ? (
+                          <div className="relative">
+                            <img
+                              src={project.preview.source}
+                              alt={`Apercu ${project.title}`}
+                              className="aspect-video w-full object-cover transition duration-500 group-hover:scale-[1.03]"
                             />
                             <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#050816]/70 via-transparent to-transparent" />
                           </div>
@@ -562,8 +608,8 @@ export default function App() {
                                 {project.mediaStatus}
                               </p>
                               <p className="mt-2 text-sm leading-6 text-zinc-400">
-                                Ajoute ici une video ou des captures pour montrer rapidement
-                                l'interface du projet.
+                                Depose des images ou videos dans `src/{project.mediaFolder}` pour
+                                afficher automatiquement un apercu du projet.
                               </p>
                             </div>
                           </div>
@@ -593,16 +639,23 @@ export default function App() {
                         ))}
                       </div>
                       <div className="mt-6">
-                        <Motion.a
-                          href={project.repo}
-                          target="_blank"
-                          rel="noreferrer"
-                          whileHover={{ x: 4 }}
-                          className="inline-flex items-center gap-2 text-sm font-medium text-cyan-200 transition hover:text-cyan-100"
-                        >
-                          Voir le repo GitHub
-                          <ArrowUpRight size={16} />
-                        </Motion.a>
+                        <div className="flex flex-wrap items-center justify-between gap-3">
+                          <span className="text-xs uppercase tracking-[0.22em] text-zinc-500">
+                            {project.media.length > 0
+                              ? `${project.media.length} media detecte${project.media.length > 1 ? "s" : ""}`
+                              : "Aucun media detecte"}
+                          </span>
+                          <Motion.a
+                            href={project.repo}
+                            target="_blank"
+                            rel="noreferrer"
+                            whileHover={{ x: 4 }}
+                            className="inline-flex items-center gap-2 text-sm font-medium text-cyan-200 transition hover:text-cyan-100"
+                          >
+                            Voir le repo GitHub
+                            <ArrowUpRight size={16} />
+                          </Motion.a>
+                        </div>
                       </div>
                     </GlassCard>
                   </Motion.article>
