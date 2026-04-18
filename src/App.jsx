@@ -196,8 +196,7 @@ export default function App() {
   const { scrollYProgress } = useScroll();
   const heroY = useTransform(scrollYProgress, [0, 0.4], [0, -40]);
   const heroGlowY = useTransform(scrollYProgress, [0, 0.4], [0, -80]);
-  const heroCardY = useTransform(scrollYProgress, [0, 0.4], [0, -28]);
-  const heroCardRotate = useTransform(scrollYProgress, [0, 0.4], [0, -3]);
+  const heroCardY = useTransform(scrollYProgress, [0, 0.4], [0, -18]);
   const heroOrbY = useTransform(scrollYProgress, [0, 0.4], [0, -65]);
   const heroLineScale = useTransform(scrollYProgress, [0, 0.35], [1, 1.18]);
 
@@ -352,12 +351,12 @@ export default function App() {
           </Motion.div>
 
           <Motion.div
-            style={{ y: heroCardY, rotateX: 6, rotateY: -8, rotateZ: heroCardRotate }}
+            style={{ y: heroCardY }}
             initial={{ opacity: 0, y: 32 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.12, ease: "easeOut" }}
-            whileHover={{ rotateX: 10, rotateY: -12, y: -10, scale: 1.01 }}
-            className="relative min-h-[34rem] [transform-style:preserve-3d]"
+            whileHover={{ y: -8, scale: 1.008 }}
+            className="relative min-h-[34rem]"
           >
             <Motion.div
               style={{ y: heroOrbY }}
@@ -381,7 +380,7 @@ export default function App() {
             </Motion.div>
 
             <GlassCard className="relative overflow-hidden p-7">
-              <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(56,189,248,0.28),transparent_30%),radial-gradient(circle_at_bottom_left,rgba(59,130,246,0.20),transparent_35%)]" />
+              <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(56,189,248,0.18),transparent_28%),radial-gradient(circle_at_bottom_left,rgba(59,130,246,0.14),transparent_32%)]" />
               <div className="absolute inset-x-10 top-0 h-px bg-gradient-to-r from-transparent via-cyan-300/70 to-transparent" />
               <div className="relative">
                 <div className="flex items-center justify-between">
@@ -689,25 +688,24 @@ export default function App() {
         <section id="cv" className="py-14">
           <div className="grid gap-6 lg:grid-cols-[1.1fr_0.9fr]">
             <Motion.div
-              whileHover={{ y: -10, rotateX: 8, rotateY: -10, scale: 1.015 }}
+              whileHover={{ y: -8, scale: 1.01 }}
               transition={{ type: "spring", stiffness: 220, damping: 18 }}
-              className="[perspective:1600px]"
             >
-            <GlassCard className="relative overflow-hidden p-8 md:p-10 [transform-style:preserve-3d]">
-              <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(34,211,238,0.22),transparent_28%),radial-gradient(circle_at_bottom_left,rgba(59,130,246,0.18),transparent_32%)]" />
+            <GlassCard className="relative overflow-hidden p-8 md:p-10">
+              <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(34,211,238,0.16),transparent_28%),radial-gradient(circle_at_bottom_left,rgba(59,130,246,0.12),transparent_32%)]" />
               <div className="relative">
               <SectionTitle
                 eyebrow="CV"
                 title="Une consultation directe du CV dans la page."
                 description="Le rendu est mis en avant dans un cadre plus premium pour renforcer l'impression de portfolio professionnel."
               />
-              <div className="mt-8 rounded-[1.8rem] bg-gradient-to-br from-cyan-400 via-sky-400 to-blue-500 p-[1.5px] shadow-[0_25px_80px_rgba(34,211,238,0.18)]">
+              <div className="mt-8 rounded-[1.8rem] bg-gradient-to-br from-cyan-400 via-sky-400 to-blue-500 p-[1.5px] shadow-[0_20px_60px_rgba(34,211,238,0.15)]">
                 <div className="overflow-hidden rounded-[1.8rem] border border-white/10 bg-[#0a111c] p-3">
                   <Motion.img
                     src={cvImage}
                     alt="CV de Ayinde Farouk Salami"
                     className="w-full rounded-[1.35rem] object-contain"
-                    whileHover={{ scale: 1.035 }}
+                    whileHover={{ scale: 1.02 }}
                     transition={{ duration: 0.35, ease: "easeOut" }}
                   />
                 </div>
