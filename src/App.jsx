@@ -528,27 +528,32 @@ export default function App() {
                     viewport={{ once: true, amount: 0.2 }}
                     transition={{ duration: 0.45, delay: index * 0.08 }}
                     whileHover={{
-                      y: -10,
-                      rotateX: 8,
-                      rotateY: index % 2 === 0 ? -8 : 8,
+                      y: -12,
+                      rotateX: 10,
+                      rotateY: index % 2 === 0 ? -11 : 11,
                       scale: 1.02,
                     }}
-                    className="[perspective:1400px]"
+                    className="group [perspective:1600px]"
                   >
-                    <GlassCard className="flex h-full flex-col overflow-hidden p-4 [transform-style:preserve-3d] md:p-5">
-                      <div className="relative mb-5 overflow-hidden rounded-[1.5rem] border border-white/10 bg-[#07111d]">
+                    <GlassCard className="relative flex h-full flex-col overflow-hidden p-4 [transform-style:preserve-3d] md:p-5">
+                      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(56,189,248,0.16),transparent_28%),radial-gradient(circle_at_bottom_left,rgba(59,130,246,0.12),transparent_35%)] opacity-0 transition duration-300 group-hover:opacity-100" />
+                      <div className="relative mb-5 overflow-hidden rounded-[1.5rem] border border-white/10 bg-[#07111d] shadow-[0_18px_40px_rgba(0,0,0,0.35)]">
                         {project.title === "Hotel Le Morphee" ? (
-                          <video
-                            src={hotelVideo}
-                            className="aspect-video w-full object-cover"
-                            autoPlay
-                            muted
-                            loop
-                            playsInline
-                            controls
-                          />
+                          <div className="relative">
+                            <video
+                              src={hotelVideo}
+                              className="aspect-video w-full object-cover transition duration-500 group-hover:scale-[1.03]"
+                              autoPlay
+                              muted
+                              loop
+                              playsInline
+                              controls
+                            />
+                            <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#050816]/70 via-transparent to-transparent" />
+                          </div>
                         ) : (
-                          <div className="flex aspect-video items-center justify-center bg-[radial-gradient(circle_at_top,rgba(56,189,248,0.14),transparent_40%),linear-gradient(180deg,#09101a_0%,#07111d_100%)] px-6 text-center">
+                          <div className="relative flex aspect-video items-center justify-center overflow-hidden bg-[radial-gradient(circle_at_top,rgba(56,189,248,0.14),transparent_40%),linear-gradient(180deg,#09101a_0%,#07111d_100%)] px-6 text-center">
+                            <div className="absolute inset-0 bg-[linear-gradient(130deg,transparent_0%,rgba(255,255,255,0.06)_48%,transparent_60%)] opacity-0 transition duration-500 group-hover:translate-x-6 group-hover:opacity-100" />
                             <div>
                               <p className="text-xs font-semibold uppercase tracking-[0.24em] text-cyan-300/80">
                                 Media
@@ -565,7 +570,7 @@ export default function App() {
                         )}
                       </div>
 
-                      <div className="flex items-start justify-between gap-4">
+                      <div className="relative flex items-start justify-between gap-4">
                         <div>
                           <span className="rounded-full border border-cyan-400/20 bg-cyan-400/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.24em] text-cyan-200">
                             {project.category}
@@ -578,24 +583,26 @@ export default function App() {
                       <p className="mt-4 flex-1 leading-7 text-zinc-300">{project.description}</p>
                       <div className="mt-6 flex flex-wrap gap-2">
                         {project.tech.map((tech) => (
-                          <span
+                          <Motion.span
                             key={tech}
+                            whileHover={{ y: -3, scale: 1.04 }}
                             className="rounded-full border border-white/10 bg-black/20 px-3 py-2 text-sm text-zinc-200"
                           >
                             {tech}
-                          </span>
+                          </Motion.span>
                         ))}
                       </div>
                       <div className="mt-6">
-                        <a
+                        <Motion.a
                           href={project.repo}
                           target="_blank"
                           rel="noreferrer"
+                          whileHover={{ x: 4 }}
                           className="inline-flex items-center gap-2 text-sm font-medium text-cyan-200 transition hover:text-cyan-100"
                         >
                           Voir le repo GitHub
                           <ArrowUpRight size={16} />
-                        </a>
+                        </Motion.a>
                       </div>
                     </GlassCard>
                   </Motion.article>
