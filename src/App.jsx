@@ -26,18 +26,18 @@ const navItems = [
 
 const highlights = [
   {
-    title: "Infrastructure moderne",
-    text: "Administration systeme, virtualisation, reseau et environnements Linux/Windows.",
+    title: "Infrastructure & systemes",
+    text: "Je travaille sur des environnements Linux et Windows, la virtualisation, le reseau et la mise en place de services utiles.",
     icon: ServerCog,
   },
   {
     title: "Approche DevOps",
-    text: "Docker, CI/CD, automatisation et deploiement de services fiables.",
+    text: "Docker, scripts, CI/CD et deploiement: j'aime comprendre comment un projet passe du code a la mise en ligne.",
     icon: Layers3,
   },
   {
-    title: "Securite pragmatique",
-    text: "Analyse reseau, durcissement et bonnes pratiques pour applications et serveurs.",
+    title: "Securite appliquee",
+    text: "Analyse reseau, durcissement et bonnes pratiques pour garder des applications et des serveurs propres.",
     icon: ShieldCheck,
   },
 ];
@@ -46,7 +46,7 @@ const webProjects = [
   {
     title: "SUPCONTENT Music",
     description:
-      "Reseau social musical de niche avec partage de contenus, experience communautaire et logique full-stack orientee produit.",
+      "Projet full-stack autour de la musique sur lequel j'ai travaille la logique API, l'authentification et l'organisation globale de l'application.",
     tech: ["JavaScript", "Node.js", "API REST", "PostgreSQL", "JWT"],
     category: "Web app",
     repo: "https://github.com/farouk-collab/supcontent-music",
@@ -56,7 +56,7 @@ const webProjects = [
   {
     title: "Peps Gallery",
     description:
-      "Plateforme e-commerce orientee quincaillerie et mobilier, pensee pour un catalogue structure, un panier et une experience plus commerciale.",
+      "Projet e-commerce concu autour d'un catalogue, d'un panier et d'une logique plus orientee usage concret que simple maquette visuelle.",
     tech: ["TypeScript", "E-commerce", "UI produit", "Panier", "Catalogue"],
     category: "Web app",
     repo: "https://github.com/farouk-collab/Peps-Gallery",
@@ -66,7 +66,7 @@ const webProjects = [
   {
     title: "Hotel Le Morphee",
     description:
-      "Site vitrine d'etablissement hotelier avec presentation des chambres, espaces evenementiels et services dans un rendu immersif.",
+      "Site vitrine pour un hotel avec presentation des chambres, des espaces et des services, avec un vrai travail sur la mise en page et l'ambiance visuelle.",
     tech: ["JavaScript", "Site vitrine", "UI immersive", "Video preview"],
     category: "Web app",
     repo: "https://github.com/farouk-collab/H-tel-Le-Morph-e",
@@ -79,21 +79,21 @@ const securityProjects = [
   {
     title: "Infrastructure virtualisee Proxmox",
     description:
-      "Mise en place d'une infrastructure virtualisee avec gestion des services, segmentation logique, sauvegardes et exploitation Linux.",
+      "Mise en place d'une infrastructure virtualisee avec services Linux, organisation logique, sauvegardes et administration plus proche du terrain.",
     tech: ["Proxmox", "Linux", "Samba", "BorgBackup"],
     category: "Infra / DevOps",
   },
   {
     title: "Plateforme de vote distribuee",
     description:
-      "Architecture microservices avec file de traitement, persistance PostgreSQL et conteneurisation Docker pour un pipeline robuste et observable.",
+      "Projet d'architecture distribuee avec microservices, file de traitement, PostgreSQL et Docker pour comprendre les echanges entre services.",
     tech: ["Python", "Node.js", "Redis", "PostgreSQL", "Docker"],
     category: "Architecture distribuee",
   },
   {
     title: "Travaux securite & audit",
     description:
-      "Laboratoires, analyses et exercices autour de la securisation reseau, des API et des environnements systeme. Pas de visuel public pour rester propre et responsable.",
+      "Laboratoires et exercices autour du reseau, des API et du durcissement systeme. Je garde volontairement cette partie plus sobre et sans visuels publics.",
     tech: ["Wireshark", "Hardening", "Analyse reseau", "Securite API"],
     category: "Securite",
   },
@@ -230,8 +230,9 @@ export default function App() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  const cvImage = "/cv/cv-farouk.jpg";
-  const cvFile = "/cv/cv-farouk.pdf";
+  const cvVersion = "2026-05-11-123956";
+  const cvImage = `/cv/cv-farouk.jpg?v=${cvVersion}`;
+  const cvFile = `/cv/cv-farouk.pdf?v=${cvVersion}`;
   const hotelVideo = new URL("./hotel-le-morphée/hotel-le-morphée.mp4", import.meta.url).href;
   const githubProfile = "https://github.com/farouk-collab";
   const webProjectsWithMedia = webProjects.map((project) => {
@@ -272,7 +273,7 @@ export default function App() {
         <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-5">
           <a href="#top" className="space-y-1">
             <p className="text-lg font-semibold tracking-wide text-white">Ayinde Farouk Salami</p>
-            <p className="text-sm text-zinc-400">Portfolio DevOps, Cloud & Full Stack</p>
+            <p className="text-sm text-zinc-400">Etudiant SUPINFO - DevOps, cloud et developpement web</p>
           </a>
 
           <nav className="hidden items-center gap-7 text-sm text-zinc-300 md:flex">
@@ -287,7 +288,7 @@ export default function App() {
             href="#contact"
             className="hidden rounded-full border border-cyan-400/25 bg-cyan-400/10 px-5 py-3 text-sm font-medium text-cyan-100 transition hover:border-cyan-300/40 hover:bg-cyan-400/15 md:inline-flex"
           >
-            Disponible en alternance
+            Recherche une alternance
           </a>
 
           <button
@@ -339,20 +340,20 @@ export default function App() {
           >
             <div className="inline-flex items-center gap-2 rounded-full border border-cyan-400/20 bg-cyan-400/10 px-4 py-2 text-sm text-cyan-200">
               <Sparkles size={16} />
-              Etudiant SUPINFO specialise systemes, reseaux et cloud
+              Etudiant SUPINFO specialise en systemes, reseaux et cloud
             </div>
 
             <h1 className="mt-6 max-w-4xl text-5xl font-semibold leading-[1.02] tracking-tight text-white md:text-7xl">
-              Une presence digitale plus nette, plus credible, plus{" "}
+              Je construis des projets web et infra avec une approche{" "}
               <span className="bg-gradient-to-r from-cyan-200 via-sky-300 to-blue-400 bg-clip-text text-transparent">
-                premium.
+                concrete.
               </span>
             </h1>
 
             <p className="mt-6 max-w-2xl text-lg leading-8 text-zinc-300">
-              Je concois des projets web et infrastructure avec une logique fiable: architecture,
-              automatisation, deploiement et experience utilisateur claire. Je recherche une
-              alternance pour accelerer vers un role DevOps / Cloud.
+              Je suis a l'aise quand je peux toucher a toute la chaine: developpement, API,
+              Docker, deploiement, serveurs et resolution de problemes. Je cherche une alternance
+              pour continuer a progresser vers un role DevOps / Cloud.
             </p>
 
             <div className="mt-8 flex flex-wrap gap-4">
@@ -375,9 +376,9 @@ export default function App() {
 
             <div className="mt-10 grid gap-4 sm:grid-cols-3">
               {[
-                ["1 objectif", "Alternance DevOps / Cloud"],
-                ["3 axes", "Infra, automatisation, developpement"],
-                ["Stack cle", "Docker, Node.js, PostgreSQL"],
+                ["Objectif", "Alternance DevOps / Cloud"],
+                ["Ce que je fais", "Infra, automatisation, developpement"],
+                ["Stack", "Docker, Node.js, PostgreSQL"],
               ].map(([label, value]) => (
                 <GlassCard key={label} className="p-5">
                   <p className="text-sm text-zinc-400">{label}</p>
@@ -426,7 +427,7 @@ export default function App() {
                       Profil
                     </p>
                     <p className="mt-2 text-2xl font-semibold text-white">
-                      Futur ingenieur DevOps & Cloud
+                      Etudiant avec un profil orienté DevOps & Cloud
                     </p>
                   </div>
                   <div className="rounded-2xl border border-cyan-400/20 bg-cyan-400/10 p-3 text-cyan-200">
@@ -437,17 +438,17 @@ export default function App() {
                 <div className="mt-8 grid gap-4">
                   <div className="grid gap-4 md:grid-cols-[1.15fr_0.85fr]">
                     <GlassCard className="p-5">
-                      <p className="text-sm text-zinc-400">Cap actuel</p>
+                      <p className="text-sm text-zinc-400">Aujourd'hui</p>
                       <p className="mt-2 text-3xl font-semibold tracking-tight text-white">
                         Infra + App + Deploy
                       </p>
                       <p className="mt-3 text-sm leading-6 text-zinc-300">
-                        Une vision de bout en bout, de la logique metier jusqu'au service en ligne.
+                        J'aime comprendre l'ensemble: le code, l'API, le serveur et la mise en ligne.
                       </p>
                     </GlassCard>
                     <GlassCard className="flex flex-col justify-between p-5">
                       <div>
-                        <p className="text-sm text-zinc-400">Focus</p>
+                        <p className="text-sm text-zinc-400">Direction</p>
                         <p className="mt-2 text-lg font-semibold text-white">
                           DevOps / Cloud
                         </p>
@@ -459,14 +460,14 @@ export default function App() {
                   </div>
 
                   <GlassCard className="p-5">
-                    <p className="text-sm text-zinc-400">Positionnement</p>
-                    <p className="mt-2 text-lg font-semibold">Full Stack, systemes, reseaux</p>
+                    <p className="text-sm text-zinc-400">Ce que j'aime faire</p>
+                    <p className="mt-2 text-lg font-semibold">Developpement web, systemes et reseaux</p>
                   </GlassCard>
                   <GlassCard className="p-5">
-                    <p className="text-sm text-zinc-400">Forces</p>
+                    <p className="text-sm text-zinc-400">Maniere de travailler</p>
                     <p className="mt-2 leading-7 text-zinc-200">
-                      Rigueur, autonomie, curiosite technique et capacite a passer de l'interface
-                      au serveur jusqu'au deploiement.
+                      Je suis a l'aise quand il faut chercher, tester, corriger et aller jusqu'au
+                      deploiement plutot que m'arreter a l'interface.
                     </p>
                   </GlassCard>
                   <div className="grid gap-4 sm:grid-cols-2">
@@ -476,7 +477,7 @@ export default function App() {
                     </GlassCard>
                     <GlassCard className="p-5">
                       <p className="text-sm text-zinc-400">Objectif</p>
-                      <p className="mt-2 font-medium text-white">Construire du fiable et utile</p>
+                      <p className="mt-2 font-medium text-white">Monter en competence sur du concret</p>
                     </GlassCard>
                   </div>
                 </div>
@@ -512,8 +513,8 @@ export default function App() {
           <GlassCard className="grid gap-10 p-8 md:grid-cols-[1fr_1.1fr] md:p-10">
             <SectionTitle
               eyebrow="Presentation"
-              title="Un profil technique qui relie developpement, exploitation et experience."
-              description="J'aime les environnements concrets: services web, APIs, conteneurs, virtualisation, reseau et supervision. L'objectif n'est pas seulement que ca fonctionne, mais que ce soit lisible, maintenable et bien deploye."
+              title="Un profil qui relie developpement, infra et mise en ligne."
+              description="Je me sens le plus utile sur des projets concrets: services web, API, conteneurs, virtualisation, reseau, debug et deploiement. Ce qui m'interesse, ce n'est pas juste de faire une interface, mais de comprendre comment tout tient ensemble."
             />
 
             <div className="grid gap-4 sm:grid-cols-2">
@@ -521,7 +522,7 @@ export default function App() {
                 "Architecture microservices",
                 "Automatisation & scripts",
                 "Developpement web full-stack",
-                "Deploiement et debug production",
+                "Deploiement et resolution de bugs",
               ].map((item) => (
                 <div
                   key={item}
@@ -537,8 +538,8 @@ export default function App() {
         <section id="projects" className="py-14">
           <SectionTitle
             eyebrow="Projets"
-            title="Des projets web demonstrables, plus une partie securite / DevOps plus reservee."
-            description="Les projets web montrent un apercu concret quand un media est disponible. Les projets securite et infra sont presents de facon plus professionnelle, sans exposer de visuels sensibles."
+            title="Des projets qui montrent ce que je sais construire et maintenir."
+            description="Les projets web sont visibles avec un apercu quand j'ai un media. La partie securite et infra est presentee plus sobrement, parce que le plus important reste la logique technique derriere."
           />
 
           <div className="mt-10 grid gap-8 xl:grid-cols-[1.35fr_0.65fr]">
@@ -667,8 +668,8 @@ export default function App() {
               <div className="mb-5">
                 <h3 className="text-xl font-semibold text-white">Securite / DevOps</h3>
                 <p className="mt-2 text-sm leading-6 text-zinc-400">
-                  Cette partie met en avant la logique technique sans exposer de contenus
-                  sensibles ou de demonstrations inappropriees.
+                  Ici je montre surtout la demarche, les outils et les sujets travailles, sans
+                  afficher de contenus sensibles ou inutiles.
                 </p>
               </div>
 
@@ -718,8 +719,8 @@ export default function App() {
           <GlassCard className="p-8 md:p-10">
             <SectionTitle
               eyebrow="Competences"
-              title="Une base solide pour produire, deployer et maintenir."
-              description="Le portfolio devait etre plus beau, mais aussi plus credible. J'ai donc garde une lecture simple tout en mettant davantage en valeur les competences techniques."
+              title="Des competences que j'utilise vraiment en projet."
+              description="Je prefere montrer une base technique claire plutot qu'une longue liste. L'idee est de faire ressortir les outils et sujets sur lesquels je travaille le plus souvent."
             />
 
             <div className="mt-10 grid gap-5 lg:grid-cols-2">
@@ -756,8 +757,8 @@ export default function App() {
               <div className="relative">
               <SectionTitle
                 eyebrow="CV"
-                title="Une consultation directe du CV dans la page."
-                description="Le rendu est mis en avant dans un cadre plus premium pour renforcer l'impression de portfolio professionnel."
+                title="Mon CV consultable directement dans la page."
+                description="Le CV est accessible ici pour donner une vue rapide de mon parcours, de mes competences et de ce que je recherche."
               />
               <div className="mt-8 rounded-[1.8rem] bg-gradient-to-br from-cyan-400 via-sky-400 to-blue-500 p-[1.5px] shadow-[0_20px_60px_rgba(34,211,238,0.15)]">
                 <div className="overflow-hidden rounded-[1.8rem] border border-white/10 bg-[#0a111c] p-3">
@@ -780,8 +781,8 @@ export default function App() {
               </p>
               <h3 className="mt-4 text-3xl font-semibold">Version PDF</h3>
               <p className="mt-4 leading-7 text-zinc-300">
-                Ouvre ou telecharge le CV complet pour une lecture detaillee, dans un format adapte
-                aux candidatures.
+                Tu peux l'ouvrir directement ou le telecharger en PDF pour une lecture plus
+                detaillee.
               </p>
 
               <div className="mt-8 flex flex-col gap-3">
@@ -812,7 +813,7 @@ export default function App() {
             <SectionTitle
               eyebrow="Contact"
               title="Disponible pour echanger sur une alternance, un projet ou une opportunite."
-              description="Le moyen le plus direct reste l'email, mais tout est centralise ici pour garder une page claire et actionnable."
+              description="Le plus simple reste de m'ecrire par email, mais j'ai rassemble ici les liens utiles pour me contacter rapidement."
             />
 
             <div className="mt-8 grid gap-4 md:grid-cols-2">
