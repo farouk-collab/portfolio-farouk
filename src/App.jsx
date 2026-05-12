@@ -230,9 +230,9 @@ export default function App() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  const cvVersion = "2026-05-12-000001";
-  const cvImage = `/cv/cv-farouk.jpg?v=${cvVersion}`;
-  const cvFile = `/cv/cv-farouk.pdf?v=${cvVersion}`;
+  const cvVersion = "2026-05-12-160500";
+  const cvImage = `/cv/cv-farouk-2026-05-12.jpg?v=${cvVersion}`;
+  const cvFile = `/cv/cv-farouk-2026-05-12.pdf?v=${cvVersion}`;
   const hotelVideo = new URL("./hotel-le-morphée/hotel-le-morphée.mp4", import.meta.url).href;
   const githubProfile = "https://github.com/farouk-collab";
   const webProjectsWithMedia = webProjects.map((project) => {
