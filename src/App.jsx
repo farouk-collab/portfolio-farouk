@@ -99,40 +99,23 @@ const securityProjects = [
   },
 ];
 
-const skillGroups = [
-  {
-    title: "Systemes & reseaux",
-    items: [
-      "Linux",
-      "Windows Server",
-      "Active Directory",
-      "DNS / DHCP",
-      "Samba",
-      "Wireshark",
-      "Cisco Packet Tracer",
-    ],
-  },
-  {
-    title: "DevOps & cloud",
-    items: ["Docker", "CI/CD", "Render", "Cloudflare Pages", "Proxmox", "GitHub"],
-  },
-  {
-    title: "Developpement",
-    items: [
-      "React",
-      "JavaScript",
-      "TypeScript",
-      "Node.js",
-      "PHP",
-      "PostgreSQL",
-      "Redis",
-      "API REST",
-    ],
-  },
-  {
-    title: "Automatisation",
-    items: ["Bash", "PowerShell", "Postman", "JWT", "OAuth2", "Debug production"],
-  },
+const skillCards = [
+  { name: "Linux", icon: "https://cdn.simpleicons.org/linux/FCC624", accent: "from-[#1c2436] to-[#0d1322]" },
+  { name: "Docker", icon: "https://cdn.simpleicons.org/docker/2496ED", accent: "from-[#0b1f3f] to-[#09111d]" },
+  { name: "GitHub", icon: "https://cdn.simpleicons.org/github/FFFFFF", accent: "from-[#171b24] to-[#0a0f18]" },
+  { name: "Render", icon: "https://cdn.simpleicons.org/render/46E3B7", accent: "from-[#0b1f1c] to-[#081310]" },
+  { name: "Proxmox", icon: "https://cdn.simpleicons.org/proxmox/E57000", accent: "from-[#27150d] to-[#120b08]" },
+  { name: "Wireshark", icon: "https://cdn.simpleicons.org/wireshark/1679A7", accent: "from-[#0b1822] to-[#09111d]" },
+  { name: "React", icon: "https://cdn.simpleicons.org/react/61DAFB", accent: "from-[#081824] to-[#09111d]" },
+  { name: "JavaScript", icon: "https://cdn.simpleicons.org/javascript/F7DF1E", accent: "from-[#261f08] to-[#120f08]" },
+  { name: "TypeScript", icon: "https://cdn.simpleicons.org/typescript/3178C6", accent: "from-[#0b1626] to-[#09111d]" },
+  { name: "Node.js", icon: "https://cdn.simpleicons.org/nodedotjs/5FA04E", accent: "from-[#101f12] to-[#0a120b]" },
+  { name: "PHP", icon: "https://cdn.simpleicons.org/php/777BB4", accent: "from-[#15182a] to-[#0a0f18]" },
+  { name: "PostgreSQL", icon: "https://cdn.simpleicons.org/postgresql/4169E1", accent: "from-[#0b1836] to-[#09111d]" },
+  { name: "Redis", icon: "https://cdn.simpleicons.org/redis/DC382D", accent: "from-[#2a100f] to-[#140909]" },
+  { name: "Bash", icon: "https://cdn.simpleicons.org/gnubash/4EAA25", accent: "from-[#111e0c] to-[#091108]" },
+  { name: "PowerShell", icon: "https://cdn.simpleicons.org/powershell/5391FE", accent: "from-[#0b1736] to-[#09111d]" },
+  { name: "Postman", icon: "https://cdn.simpleicons.org/postman/FF6C37", accent: "from-[#291209] to-[#140a08]" },
 ];
 
 const contactLinks = [
@@ -720,27 +703,39 @@ export default function App() {
             <SectionTitle
               eyebrow="Competences"
               title="Des competences que j'utilise vraiment en projet."
-              description="Je prefere montrer une base technique claire plutot qu'une longue liste. L'idee est de faire ressortir les outils et sujets sur lesquels je travaille le plus souvent."
+              description="J'ai transforme cette partie en galerie visuelle pour faire ressortir rapidement les technos, outils et environnements que j'utilise le plus."
             />
 
-            <div className="mt-10 grid gap-5 lg:grid-cols-2">
-              {skillGroups.map((group) => (
-                <div
-                  key={group.title}
-                  className="rounded-[1.8rem] border border-white/10 bg-black/20 p-6"
+            <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+              {skillCards.map((skill, index) => (
+                <Motion.div
+                  key={skill.name}
+                  initial={{ opacity: 0, y: 18 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, amount: 0.2 }}
+                  transition={{ duration: 0.35, delay: index * 0.03 }}
+                  whileHover={{ y: -10, scale: 1.02 }}
                 >
-                  <h3 className="text-lg font-semibold text-cyan-200">{group.title}</h3>
-                  <div className="mt-5 flex flex-wrap gap-3">
-                    {group.items.map((item) => (
-                      <span
-                        key={item}
-                        className="rounded-full border border-cyan-400/15 bg-cyan-400/10 px-4 py-2 text-sm text-cyan-50"
-                      >
-                        {item}
-                      </span>
-                    ))}
-                  </div>
-                </div>
+                  <GlassCard className="group relative h-full overflow-hidden p-6">
+                    <div
+                      className={`absolute inset-0 bg-gradient-to-br ${skill.accent} opacity-90 transition duration-300 group-hover:opacity-100`}
+                    />
+                    <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.12),transparent_42%)] opacity-60" />
+                    <div className="relative flex min-h-[12.5rem] flex-col items-center justify-center text-center">
+                      <div className="flex h-20 w-20 items-center justify-center rounded-[1.7rem] border border-white/10 bg-white/95 shadow-[0_20px_45px_rgba(0,0,0,0.28)]">
+                        <img
+                          src={skill.icon}
+                          alt={`Logo ${skill.name}`}
+                          className="h-11 w-11 object-contain"
+                          loading="lazy"
+                        />
+                      </div>
+                      <p className="mt-5 text-lg font-semibold tracking-wide text-white">
+                        {skill.name}
+                      </p>
+                    </div>
+                  </GlassCard>
+                </Motion.div>
               ))}
             </div>
           </GlassCard>
