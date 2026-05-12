@@ -495,25 +495,54 @@ export default function App() {
         <section id="about" className="py-14">
           <GlassCard className="grid gap-10 p-8 md:grid-cols-[1fr_1.1fr] md:p-10">
             <SectionTitle
-              eyebrow="Presentation"
-              title="Un profil qui relie developpement, infra et mise en ligne."
-              description="Je me sens le plus utile sur des projets concrets: services web, API, conteneurs, virtualisation, reseau, debug et deploiement. Ce qui m'interesse, ce n'est pas juste de faire une interface, mais de comprendre comment tout tient ensemble."
+              eyebrow="A propos"
+              title="Un profil terrain entre developpement, infrastructure et securite."
+              description="Je suis etudiant en Bachelor 3 Informatique a SUPINFO, specialise en DevOps, Cloud et infrastructures securisees. J'aime travailler sur des projets concrets ou je peux concevoir, tester, deployer et maintenir une solution de bout en bout."
             />
 
-            <div className="grid gap-4 sm:grid-cols-2">
-              {[
-                "Architecture microservices",
-                "Automatisation & scripts",
-                "Developpement web full-stack",
-                "Deploiement et resolution de bugs",
-              ].map((item) => (
-                <div
-                  key={item}
-                  className="rounded-[1.75rem] border border-white/10 bg-black/20 px-5 py-5 text-zinc-100"
-                >
-                  {item}
-                </div>
-              ))}
+            <div className="grid gap-4">
+              <GlassCard className="p-6">
+                <p className="text-sm text-zinc-400">Aujourd'hui</p>
+                <p className="mt-3 text-lg leading-8 text-zinc-200">
+                  Je conçois et déploie des applications et architectures modernes autour des
+                  API REST sécurisées, de l'authentification JWT / Keycloak, de Docker et des
+                  pipelines CI/CD. Mon approche relie naturellement développement web, systèmes,
+                  réseaux et mise en production.
+                </p>
+              </GlassCard>
+
+              <div className="grid gap-4 sm:grid-cols-2">
+                <GlassCard className="p-6">
+                  <p className="text-sm text-zinc-400">Experience recente</p>
+                  <p className="mt-2 text-xl font-semibold text-white">Stage Studelecta - Paris</p>
+                  <p className="mt-3 leading-7 text-zinc-300">
+                    Développement, tests et déploiement d'une plateforme web full-stack avec
+                    Next.js, NestJS, MongoDB, Render et Vercel dans un environnement Agile.
+                  </p>
+                </GlassCard>
+
+                <GlassCard className="p-6">
+                  <p className="text-sm text-zinc-400">Objectif</p>
+                  <p className="mt-2 text-xl font-semibold text-white">Alternance DevOps / Cloud</p>
+                  <p className="mt-3 leading-7 text-zinc-300">
+                    Je recherche une alternance pour septembre 2026 avec un rythme d'une semaine
+                    en entreprise et une semaine a l'ecole.
+                  </p>
+                </GlassCard>
+              </div>
+
+              <div className="grid gap-4 sm:grid-cols-3">
+                {[
+                  ["Formation", "SUPINFO Bachelor 3, apres un parcours ESIEA en sciences et technologies du numerique."],
+                  ["Sujets que j'aime", "Automatisation, cybersécurité, environnements Linux, virtualisation et déploiement."],
+                  ["Maniere de travailler", "Esprit d'analyse, autonomie, rigueur, communication claire et travail en equipe."],
+                ].map(([label, text]) => (
+                  <GlassCard key={label} className="p-5">
+                    <p className="text-sm text-zinc-400">{label}</p>
+                    <p className="mt-3 leading-7 text-zinc-200">{text}</p>
+                  </GlassCard>
+                ))}
+              </div>
             </div>
           </GlassCard>
         </section>
