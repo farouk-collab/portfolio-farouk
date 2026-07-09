@@ -2,17 +2,25 @@ import { useEffect, useState } from "react";
 import { AnimatePresence, motion as Motion, useScroll, useTransform } from "framer-motion";
 import {
   ArrowUpRight,
+  Boxes,
   BriefcaseBusiness,
+  Code2,
   Download,
   Globe,
   GitBranch,
   Layers3,
+  Languages,
   Mail,
+  MapPin,
   Menu,
+  Network,
   Phone,
   ServerCog,
   ShieldCheck,
   Sparkles,
+  Timer,
+  UserRound,
+  Workflow,
   X,
 } from "lucide-react";
 
@@ -27,17 +35,17 @@ const navItems = [
 const highlights = [
   {
     title: "Infrastructure & systemes",
-    text: "Je travaille sur des environnements Linux et Windows, la virtualisation, le reseau et la mise en place de services utiles.",
+    text: "Je travaille sur Linux, Windows Server, la virtualisation Proxmox et les services reseau avec une approche terrain.",
     icon: ServerCog,
   },
   {
     title: "Approche DevOps",
-    text: "Docker, scripts, CI/CD et deploiement: j'aime comprendre comment un projet passe du code a la mise en ligne.",
+    text: "Docker, CI/CD, GitHub Actions et deploiement: j'aime relier le developpement, l'automatisation et la mise en production.",
     icon: Layers3,
   },
   {
     title: "Securite appliquee",
-    text: "Analyse reseau, durcissement et bonnes pratiques pour garder des applications et des serveurs propres.",
+    text: "Analyse reseau, audit et bonnes pratiques de securite pour garder des applications et des serveurs robustes.",
     icon: ShieldCheck,
   },
 ];
@@ -46,8 +54,8 @@ const webProjects = [
   {
     title: "SUPCONTENT Music",
     description:
-      "Projet full-stack autour de la musique sur lequel j'ai travaille la logique API, l'authentification et l'organisation globale de l'application.",
-    tech: ["JavaScript", "Node.js", "API REST", "PostgreSQL", "JWT"],
+      "Plateforme musicale sociale avec API REST en production, authentification JWT / OAuth2 et une logique backend pensee pour un usage concret.",
+    tech: ["TypeScript", "Node.js", "API REST", "JWT", "OAuth2"],
     category: "Web app",
     repo: "https://github.com/farouk-collab/supcontent-music",
     mediaFolder: "supcontent",
@@ -79,43 +87,24 @@ const securityProjects = [
   {
     title: "Infrastructure virtualisee Proxmox",
     description:
-      "Mise en place d'une infrastructure virtualisee avec services Linux, organisation logique, sauvegardes et administration plus proche du terrain.",
+      "Deploiement d'une infrastructure virtualisee sous Proxmox avec gestion des VM, sauvegardes BorgBackup, partage Samba et travail en equipe.",
     tech: ["Proxmox", "Linux", "Samba", "BorgBackup"],
     category: "Infra / DevOps",
   },
   {
-    title: "Plateforme de vote distribuee",
+    title: "Audit cybersecurite",
+    description:
+      "Audit d'une infrastructure simulee avec analyse reseau et recommandations priorisees a partir d'outils de diagnostic et d'observation.",
+    tech: ["Wireshark", "Nmap", "Analyse reseau", "Recommandations"],
+    category: "Securite",
+  },
+  {
+    title: "Plateforme distribuee & conteneurisee",
     description:
       "Projet d'architecture distribuee avec microservices, file de traitement, PostgreSQL et Docker pour comprendre les echanges entre services.",
     tech: ["Python", "Node.js", "Redis", "PostgreSQL", "Docker"],
     category: "Architecture distribuee",
   },
-  {
-    title: "Travaux securite & audit",
-    description:
-      "Laboratoires et exercices autour du reseau, des API et du durcissement systeme. Je garde volontairement cette partie plus sobre et sans visuels publics.",
-    tech: ["Wireshark", "Hardening", "Analyse reseau", "Securite API"],
-    category: "Securite",
-  },
-];
-
-const skillCards = [
-  { name: "Linux", icon: "https://cdn.simpleicons.org/linux/FCC624", accent: "from-[#1c2436] to-[#0d1322]" },
-  { name: "Docker", icon: "https://cdn.simpleicons.org/docker/2496ED", accent: "from-[#0b1f3f] to-[#09111d]" },
-  { name: "GitHub", icon: "https://cdn.simpleicons.org/github/FFFFFF", accent: "from-[#171b24] to-[#0a0f18]" },
-  { name: "Render", icon: "https://cdn.simpleicons.org/render/46E3B7", accent: "from-[#0b1f1c] to-[#081310]" },
-  { name: "Proxmox", icon: "https://cdn.simpleicons.org/proxmox/E57000", accent: "from-[#27150d] to-[#120b08]" },
-  { name: "Wireshark", icon: "https://cdn.simpleicons.org/wireshark/1679A7", accent: "from-[#0b1822] to-[#09111d]" },
-  { name: "React", icon: "https://cdn.simpleicons.org/react/61DAFB", accent: "from-[#081824] to-[#09111d]" },
-  { name: "JavaScript", icon: "https://cdn.simpleicons.org/javascript/F7DF1E", accent: "from-[#261f08] to-[#120f08]" },
-  { name: "TypeScript", icon: "https://cdn.simpleicons.org/typescript/3178C6", accent: "from-[#0b1626] to-[#09111d]" },
-  { name: "Node.js", icon: "https://cdn.simpleicons.org/nodedotjs/5FA04E", accent: "from-[#101f12] to-[#0a120b]" },
-  { name: "PHP", icon: "https://cdn.simpleicons.org/php/777BB4", accent: "from-[#15182a] to-[#0a0f18]" },
-  { name: "PostgreSQL", icon: "https://cdn.simpleicons.org/postgresql/4169E1", accent: "from-[#0b1836] to-[#09111d]" },
-  { name: "Redis", icon: "https://cdn.simpleicons.org/redis/DC382D", accent: "from-[#2a100f] to-[#140909]" },
-  { name: "Bash", icon: "https://cdn.simpleicons.org/gnubash/4EAA25", accent: "from-[#111e0c] to-[#091108]" },
-  { name: "PowerShell", icon: "https://cdn.simpleicons.org/powershell/5391FE", accent: "from-[#0b1736] to-[#09111d]" },
-  { name: "Postman", icon: "https://cdn.simpleicons.org/postman/FF6C37", accent: "from-[#291209] to-[#140a08]" },
 ];
 
 const contactLinks = [
@@ -138,10 +127,156 @@ const contactLinks = [
     icon: Globe,
   },
   {
-    href: "https://github.com/farouk-collab/portfolio-farouk",
+    href: "https://github.com/farouk-collab",
     label: "Ouvrir GitHub",
     text: "GitHub",
     icon: GitBranch,
+  },
+  {
+    href: "https://portfolio-farouk.onrender.com",
+    label: "Ouvrir le portfolio",
+    text: "portfolio-farouk.onrender.com",
+    icon: Globe,
+  },
+];
+
+const quickInfoCards = [
+  {
+    label: "Localisation",
+    value: "Orly (94310), France",
+    icon: MapPin,
+  },
+  {
+    label: "Format",
+    value: "Presentiel & teletravail",
+    icon: Globe,
+  },
+  {
+    label: "Rythme",
+    value: "1 semaine entreprise / 1 semaine ecole",
+    icon: Timer,
+  },
+  {
+    label: "Disponibilite",
+    value: "Septembre 2026",
+    icon: Mail,
+  },
+];
+
+const profileDetails = [
+  {
+    title: "Coordonnees",
+    icon: UserRound,
+    items: ["Orly (94310)", "France", "+33 7 49 09 39 72", "farouksalami47@gmail.com"],
+  },
+  {
+    title: "Langues",
+    icon: Languages,
+    items: [
+      "Francais : langue maternelle",
+      "Anglais : professionnel (B2)",
+      "Documentation technique, GitHub, Stack Overflow",
+    ],
+  },
+  {
+    title: "Cadre recherche",
+    icon: BriefcaseBusiness,
+    items: ["Alternance DevOps / Cloud", "Septembre 2026", "Disponible en presentiel et a distance"],
+  },
+];
+
+const themeVars = {
+  "--page-bg": "#0f172a",
+  "--header-bg": "rgba(15, 23, 42, 0.82)",
+  "--card-bg": "rgba(255,255,255,0.06)",
+  "--card-border": "rgba(148,163,184,0.18)",
+  "--accent": "#7dd3fc",
+  "--accent-soft": "rgba(125,211,252,0.12)",
+  "--accent-border": "rgba(125,211,252,0.24)",
+};
+
+const skillThemes = [
+  {
+    title: "Developpement Web & Mobile",
+    subtitle: "Front-end, back-end, API et donnees",
+    icon: Code2,
+    accent: "from-[#10233c] via-[#0c1a2c] to-[#09111d]",
+    items: [
+      { name: "Python", icon: "https://cdn.simpleicons.org/python/3776AB" },
+      { name: "Django", icon: "https://cdn.simpleicons.org/django/092E20" },
+      { name: "HTML", icon: "https://cdn.simpleicons.org/html5/E34F26" },
+      { name: "CSS", icon: "https://cdn.simpleicons.org/css/1572B6" },
+      { name: "JavaScript", icon: "https://cdn.simpleicons.org/javascript/F7DF1E" },
+      { name: "TypeScript", icon: "https://cdn.simpleicons.org/typescript/3178C6" },
+      { name: "Node.js", icon: "https://cdn.simpleicons.org/nodedotjs/5FA04E" },
+      { name: "Next.js", icon: "https://cdn.simpleicons.org/nextdotjs/FFFFFF" },
+      { name: "NestJS", icon: "https://cdn.simpleicons.org/nestjs/E0234E" },
+      { name: "PHP", icon: "https://cdn.simpleicons.org/php/777BB4" },
+      { name: "Flutter", icon: "https://cdn.simpleicons.org/flutter/02569B" },
+      { name: "PostgreSQL", icon: "https://cdn.simpleicons.org/postgresql/4169E1" },
+      { name: "Redis", icon: "https://cdn.simpleicons.org/redis/DC382D" },
+      { name: "JWT", icon: "https://cdn.simpleicons.org/jsonwebtokens/FFFFFF" },
+      { name: "OAuth2", icon: "https://cdn.simpleicons.org/auth0/EB5424" },
+      { name: "API REST", iconComponent: Globe },
+    ],
+  },
+  {
+    title: "Virtualisation & Conteneurs",
+    subtitle: "Isolation, orchestration et environnements de test",
+    icon: Boxes,
+    accent: "from-[#2a1d10] via-[#1a140d] to-[#0d0e12]",
+    items: [
+      { name: "VMware", icon: "https://cdn.simpleicons.org/vmware/607078" },
+      { name: "VirtualBox", icon: "https://cdn.simpleicons.org/virtualbox/183A61" },
+      { name: "Proxmox", icon: "https://cdn.simpleicons.org/proxmox/E57000" },
+      { name: "Docker", icon: "https://cdn.simpleicons.org/docker/2496ED" },
+      { name: "Kubernetes", icon: "https://cdn.simpleicons.org/kubernetes/326CE5" },
+    ],
+  },
+  {
+    title: "Systemes & Reseaux",
+    subtitle: "Administration, services reseau et supervision",
+    icon: Network,
+    accent: "from-[#0f2428] via-[#0b1a20] to-[#09111d]",
+    items: [
+      { name: "Linux", icon: "https://cdn.simpleicons.org/linux/FCC624" },
+      { name: "Windows Server", icon: "https://cdn.simpleicons.org/windows/0078D4" },
+      { name: "Active Directory", iconComponent: ServerCog },
+      { name: "DHCP", iconComponent: Network },
+      { name: "DNS", iconComponent: Globe },
+      { name: "GPO", iconComponent: ShieldCheck },
+      { name: "Samba", icon: "https://cdn.simpleicons.org/samba/FFFFFF" },
+      { name: "Cisco Packet Tracer", icon: "https://cdn.simpleicons.org/cisco/1BA0D7" },
+      { name: "Wireshark", icon: "https://cdn.simpleicons.org/wireshark/1679A7" },
+      { name: "Nmap", iconComponent: ShieldCheck },
+    ],
+  },
+  {
+    title: "DevOps & Outils Projet",
+    subtitle: "Automatisation, collaboration et deploiement",
+    icon: Workflow,
+    accent: "from-[#1f1227] via-[#17111e] to-[#09111d]",
+    items: [
+      { name: "Git", icon: "https://cdn.simpleicons.org/git/F05032" },
+      { name: "GitHub", icon: "https://cdn.simpleicons.org/github/FFFFFF" },
+      { name: "Bash", icon: "https://cdn.simpleicons.org/gnubash/4EAA25" },
+      { name: "PowerShell", icon: "https://cdn.simpleicons.org/powershell/5391FE" },
+      { name: "CI/CD", icon: "https://cdn.simpleicons.org/githubactions/2088FF" },
+      { name: "AWS", icon: "https://cdn.simpleicons.org/amazonwebservices/FF9900" },
+      { name: "Terraform", icon: "https://cdn.simpleicons.org/terraform/844FBA" },
+      { name: "Ansible", icon: "https://cdn.simpleicons.org/ansible/EE0000" },
+      { name: "Jenkins", icon: "https://cdn.simpleicons.org/jenkins/D24939" },
+      { name: "Nginx", icon: "https://cdn.simpleicons.org/nginx/009639" },
+      { name: "Cloudflare Pages", icon: "https://cdn.simpleicons.org/cloudflarepages/F38020" },
+      { name: "Render", icon: "https://cdn.simpleicons.org/render/46E3B7" },
+      { name: "Vercel", icon: "https://cdn.simpleicons.org/vercel/FFFFFF" },
+      { name: "Postman", icon: "https://cdn.simpleicons.org/postman/FF6C37" },
+      { name: "Jira", icon: "https://cdn.simpleicons.org/jira/0052CC" },
+      { name: "Trello", icon: "https://cdn.simpleicons.org/trello/0052CC" },
+      { name: "Notion", icon: "https://cdn.simpleicons.org/notion/FFFFFF" },
+      { name: "Confluence", icon: "https://cdn.simpleicons.org/confluence/172B4D" },
+      { name: "Microsoft 365", icon: "https://cdn.simpleicons.org/microsoft365/D83B01" },
+    ],
   },
 ];
 
@@ -189,7 +324,11 @@ function SectionTitle({ eyebrow, title, description }) {
 function GlassCard({ className = "", children }) {
   return (
     <div
-      className={`rounded-[2rem] border border-white/10 bg-white/[0.04] shadow-[0_24px_80px_rgba(0,0,0,0.32)] backdrop-blur-xl ${className}`}
+      style={{
+        borderColor: "var(--card-border)",
+        backgroundColor: "var(--card-bg)",
+      }}
+      className={`rounded-[2rem] border shadow-[0_24px_80px_rgba(0,0,0,0.32)] backdrop-blur-xl ${className}`}
     >
       {children}
     </div>
@@ -213,9 +352,8 @@ export default function App() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  const cvVersion = "2026-05-13-005500";
-  const cvImage = `/cv/cv-farouk-2026-05-13.jpg?v=${cvVersion}`;
-  const cvFile = `/cv/cv-farouk-2026-05-13.pdf?v=${cvVersion}`;
+  const cvVersion = "2026-07-09-000001";
+  const cvFile = `/cv/cv-farouk-2026-07-09.pdf?v=${cvVersion}`;
   const hotelVideo = new URL("./hotel-le-morphée/hotel-le-morphée.mp4", import.meta.url).href;
   const githubProfile = "https://github.com/farouk-collab";
   const webProjectsWithMedia = webProjects.map((project) => {
@@ -234,29 +372,86 @@ export default function App() {
   });
 
   return (
-    <div className="min-h-screen bg-[#050816] text-white selection:bg-cyan-400/30 selection:text-white">
+    <div
+      style={themeVars}
+      className="min-h-screen bg-[var(--page-bg)] text-white selection:bg-cyan-400/30 selection:text-white"
+    >
       <div className="pointer-events-none fixed inset-0 overflow-hidden">
         <Motion.div
-          style={{ y: heroGlowY }}
-          className="absolute left-[-8rem] top-[-4rem] h-72 w-72 rounded-full bg-cyan-500/20 blur-3xl"
+          style={{ y: heroGlowY, backgroundColor: "rgba(125,211,252,0.22)" }}
+          className="absolute left-[-8rem] top-[-4rem] h-72 w-72 rounded-full blur-3xl"
+          animate={{ opacity: [0.65, 1, 0.65], scale: [1, 1.06, 1] }}
+          transition={{ duration: 9, repeat: Infinity, ease: "easeInOut" }}
         />
         <Motion.div
-          style={{ y: heroGlowY }}
-          className="absolute right-[-5rem] top-[8rem] h-80 w-80 rounded-full bg-blue-500/14 blur-3xl"
+          style={{ y: heroGlowY, backgroundColor: "rgba(96,165,250,0.18)" }}
+          className="absolute right-[-5rem] top-[8rem] h-80 w-80 rounded-full blur-3xl"
+          animate={{ opacity: [0.55, 0.9, 0.55], scale: [1, 1.08, 1] }}
+          transition={{ duration: 10, repeat: Infinity, ease: "easeInOut", delay: 0.8 }}
         />
-        <div className="absolute bottom-[-8rem] left-1/3 h-96 w-96 rounded-full bg-sky-900/25 blur-3xl" />
+        <Motion.div
+          animate={{ x: [0, 28, 0], y: [0, -20, 0], rotate: [0, 8, 0] }}
+          transition={{ duration: 14, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute left-[6%] top-[24%] h-64 w-64 rounded-full border border-sky-300/10 bg-[radial-gradient(circle,rgba(186,230,253,0.12),rgba(14,165,233,0.03)_55%,transparent_72%)]"
+        />
+        <Motion.div
+          animate={{ x: [0, 36, 0], y: [0, 18, 0], rotate: [0, 14, 0] }}
+          transition={{ duration: 18, repeat: Infinity, ease: "easeInOut", delay: 0.6 }}
+          className="absolute left-[18%] top-[12%] h-40 w-40 rounded-[2rem] border border-cyan-200/10 bg-[linear-gradient(145deg,rgba(186,230,253,0.09),rgba(59,130,246,0.02))] blur-[1px]"
+        />
+        <Motion.div
+          animate={{ x: [0, -24, 0], y: [0, 22, 0], rotate: [0, -10, 0] }}
+          transition={{ duration: 16, repeat: Infinity, ease: "easeInOut", delay: 1.2 }}
+          className="absolute right-[8%] top-[30%] h-52 w-52 rounded-[2.5rem] border border-cyan-200/10 bg-[linear-gradient(135deg,rgba(125,211,252,0.08),rgba(255,255,255,0.02))]"
+        />
+        <Motion.div
+          animate={{ x: [0, -22, 0], y: [0, -28, 0] }}
+          transition={{ duration: 20, repeat: Infinity, ease: "easeInOut", delay: 1.4 }}
+          className="absolute right-[20%] top-[10%] h-28 w-80 rounded-full border border-white/8 bg-[linear-gradient(90deg,rgba(255,255,255,0.04),rgba(125,211,252,0.03),transparent)] blur-sm"
+        />
+        <Motion.div
+          animate={{ x: [0, 18, 0], y: [0, 16, 0] }}
+          transition={{ duration: 12, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
+          className="absolute bottom-[-8rem] left-1/3 h-96 w-96 rounded-full bg-[radial-gradient(circle,rgba(96,165,250,0.12),rgba(59,130,246,0.04)_50%,transparent_72%)] blur-3xl"
+        />
         <Motion.div
           style={{ scale: heroLineScale }}
-          className="absolute left-1/2 top-[-12%] h-[44rem] w-[44rem] -translate-x-1/2 rounded-full border border-cyan-400/10"
+          className="absolute left-1/2 top-[-12%] h-[44rem] w-[44rem] -translate-x-1/2 rounded-full border border-sky-300/10"
         />
-        <div className="absolute left-1/2 top-[8%] h-[28rem] w-[70rem] -translate-x-1/2 bg-[radial-gradient(circle,rgba(56,189,248,0.08)_0%,rgba(5,8,22,0)_60%)]" />
+        <Motion.div
+          animate={{ rotate: [0, 360] }}
+          transition={{ duration: 42, repeat: Infinity, ease: "linear" }}
+          className="absolute left-1/2 top-[6%] h-[34rem] w-[34rem] -translate-x-1/2 rounded-full border border-white/6"
+        />
+        <Motion.div
+          animate={{ rotate: [360, 0] }}
+          transition={{ duration: 54, repeat: Infinity, ease: "linear" }}
+          className="absolute left-1/2 top-[14%] h-[24rem] w-[24rem] -translate-x-1/2 rounded-full border border-cyan-200/8"
+        />
+        <div className="absolute left-1/2 top-[8%] h-[28rem] w-[70rem] -translate-x-1/2 bg-[radial-gradient(circle,rgba(186,230,253,0.08)_0%,rgba(15,23,42,0)_60%)]" />
+        <Motion.div
+          animate={{ x: ["-8%", "8%", "-8%"], opacity: [0.18, 0.28, 0.18] }}
+          transition={{ duration: 22, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute inset-y-0 left-[-10%] w-[55%] rotate-6 bg-[linear-gradient(90deg,transparent,rgba(255,255,255,0.06),transparent)] blur-3xl"
+        />
+        <Motion.div
+          animate={{ x: ["8%", "-8%", "8%"], opacity: [0.12, 0.2, 0.12] }}
+          transition={{ duration: 26, repeat: Infinity, ease: "easeInOut", delay: 0.8 }}
+          className="absolute inset-y-0 right-[-10%] -rotate-6 bg-[linear-gradient(90deg,transparent,rgba(125,211,252,0.05),transparent)] blur-3xl w-[48%]"
+        />
+        <div className="absolute inset-0 bg-[linear-gradient(120deg,rgba(255,255,255,0.02)_0%,transparent_30%,rgba(125,211,252,0.03)_55%,transparent_100%)]" />
       </div>
 
-      <header className="sticky top-0 z-50 border-b border-white/8 bg-[#050816]/75 backdrop-blur-xl">
+      <header
+        style={{ backgroundColor: "var(--header-bg)", borderColor: "var(--card-border)" }}
+        className="sticky top-0 z-50 border-b backdrop-blur-xl"
+      >
         <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-5">
           <a href="#top" className="space-y-1">
             <p className="text-lg font-semibold tracking-wide text-white">Ayinde Farouk Salami</p>
-            <p className="text-sm text-zinc-400">Etudiant SUPINFO - DevOps, cloud et developpement web</p>
+            <p className="text-sm text-zinc-400">
+              Alternant DevOps / Cloud / Infrastructure & securite
+            </p>
           </a>
 
           <nav className="hidden items-center gap-7 text-sm text-zinc-300 md:flex">
@@ -271,7 +466,7 @@ export default function App() {
             href="#contact"
             className="hidden rounded-full border border-cyan-400/25 bg-cyan-400/10 px-5 py-3 text-sm font-medium text-cyan-100 transition hover:border-cyan-300/40 hover:bg-cyan-400/15 md:inline-flex"
           >
-            Recherche une alternance
+            Disponible en septembre 2026
           </a>
 
           <button
@@ -323,20 +518,20 @@ export default function App() {
           >
             <div className="inline-flex items-center gap-2 rounded-full border border-cyan-400/20 bg-cyan-400/10 px-4 py-2 text-sm text-cyan-200">
               <Sparkles size={16} />
-              Etudiant SUPINFO specialise en systemes, reseaux et cloud
+              Bachelor 3 SUPINFO - backend, DevOps, cloud et securite
             </div>
 
             <h1 className="mt-6 max-w-4xl text-5xl font-semibold leading-[1.02] tracking-tight text-white md:text-7xl">
-              Je construis des projets web et infra avec une approche{" "}
+              Je relie le{" "}
               <span className="bg-gradient-to-r from-cyan-200 via-sky-300 to-blue-400 bg-clip-text text-transparent">
-                concrete.
+                backend, l'infra et le deploiement.
               </span>
             </h1>
 
             <p className="mt-6 max-w-2xl text-lg leading-8 text-zinc-300">
-              Je suis a l'aise quand je peux toucher a toute la chaine: developpement, API,
-              Docker, deploiement, serveurs et resolution de problemes. Je cherche une alternance
-              pour continuer a progresser vers un role DevOps / Cloud.
+              J'ai recemment travaille sur des environnements Python / Django et Next.js / NestJS,
+              avec Docker, API REST, CI/CD et mise en production. Je cherche une alternance pour
+              continuer a progresser vers un role DevOps / Cloud a partir de septembre 2026.
             </p>
 
             <div className="mt-8 flex flex-wrap gap-4">
@@ -360,8 +555,8 @@ export default function App() {
             <div className="mt-10 grid gap-4 sm:grid-cols-3">
               {[
                 ["Objectif", "Alternance DevOps / Cloud"],
-                ["Ce que je fais", "Infra, automatisation, developpement"],
-                ["Stack", "Docker, Node.js, PostgreSQL"],
+                ["Ce que je fais", "Backend, infra, automatisation"],
+                ["Stack", "Docker, Python, TypeScript"],
               ].map(([label, value]) => (
                 <GlassCard key={label} className="p-5">
                   <p className="text-sm text-zinc-400">{label}</p>
@@ -369,6 +564,62 @@ export default function App() {
                 </GlassCard>
               ))}
             </div>
+
+            <Motion.div
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.45, delay: 0.34 }}
+              whileHover={{ y: -4 }}
+              className="mt-6"
+            >
+              <GlassCard className="relative overflow-hidden p-5 md:p-6">
+                <div className="absolute inset-0 bg-[linear-gradient(135deg,rgba(125,211,252,0.08),transparent_42%,rgba(255,255,255,0.03)_100%)]" />
+                <div className="relative flex flex-col gap-5">
+                  <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+                    <div>
+                      <p className="text-xs font-semibold uppercase tracking-[0.3em] text-cyan-200/80">
+                        Informations
+                      </p>
+                      <h3 className="mt-3 text-2xl font-semibold text-white md:text-3xl">
+                        Disponible pour une alternance a partir de septembre 2026
+                      </h3>
+                    </div>
+                    <a
+                      href="mailto:farouksalami47@gmail.com"
+                      className="inline-flex w-fit items-center gap-2 rounded-full border border-cyan-300/20 bg-cyan-400/10 px-5 py-3 text-sm font-medium text-cyan-100 transition hover:border-cyan-200/35 hover:bg-cyan-400/15"
+                    >
+                      <Mail size={16} />
+                      farouksalami47@gmail.com
+                    </a>
+                  </div>
+
+                  <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+                    {quickInfoCards.map((item) => {
+                      const Icon = item.icon;
+
+                      return (
+                        <div
+                          key={item.label}
+                          className="rounded-[1.6rem] border border-white/8 bg-black/20 px-4 py-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]"
+                        >
+                          <div className="flex items-center gap-3">
+                            <div className="rounded-2xl border border-cyan-400/20 bg-cyan-400/10 p-2.5 text-cyan-200">
+                              <Icon size={16} />
+                            </div>
+                            <p className="text-[11px] font-semibold uppercase tracking-[0.28em] text-zinc-400">
+                              {item.label}
+                            </p>
+                          </div>
+                          <p className="mt-4 text-base leading-7 text-zinc-100 break-words">
+                            {item.value}
+                          </p>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              </GlassCard>
+            </Motion.div>
           </Motion.div>
 
           <Motion.div
@@ -410,7 +661,7 @@ export default function App() {
                       Profil
                     </p>
                     <p className="mt-2 text-2xl font-semibold text-white">
-                      Etudiant avec un profil orienté DevOps & Cloud
+                      Profil backend, DevOps & cloud
                     </p>
                   </div>
                   <div className="rounded-2xl border border-cyan-400/20 bg-cyan-400/10 p-3 text-cyan-200">
@@ -423,10 +674,10 @@ export default function App() {
                     <GlassCard className="p-5">
                       <p className="text-sm text-zinc-400">Aujourd'hui</p>
                       <p className="mt-2 text-3xl font-semibold tracking-tight text-white">
-                        Infra + App + Deploy
+                        API + Infra + Deploy
                       </p>
                       <p className="mt-3 text-sm leading-6 text-zinc-300">
-                        J'aime comprendre l'ensemble: le code, l'API, le serveur et la mise en ligne.
+                        J'aime comprendre l'ensemble: le code, l'API, le serveur et la mise en production.
                       </p>
                     </GlassCard>
                     <GlassCard className="flex flex-col justify-between p-5">
@@ -444,7 +695,7 @@ export default function App() {
 
                   <GlassCard className="p-5">
                     <p className="text-sm text-zinc-400">Ce que j'aime faire</p>
-                    <p className="mt-2 text-lg font-semibold">Developpement web, systemes et reseaux</p>
+                    <p className="mt-2 text-lg font-semibold">Backend, cloud, systemes et reseaux</p>
                   </GlassCard>
                   <GlassCard className="p-5">
                     <p className="text-sm text-zinc-400">Maniere de travailler</p>
@@ -497,27 +748,26 @@ export default function App() {
             <SectionTitle
               eyebrow="A propos"
               title="Un profil terrain entre developpement, infrastructure et securite."
-              description="Je suis etudiant en Bachelor 3 Informatique a SUPINFO, specialise en DevOps, Cloud et infrastructures securisees. J'aime travailler sur des projets concrets ou je peux concevoir, tester, deployer et maintenir une solution de bout en bout."
+              description="Je suis etudiant en Bachelor 3 Informatique a SUPINFO, specialise en DevOps, Cloud et infrastructures securisees. Apres des experiences en backend et full-stack, j'aime travailler sur des projets concrets ou je peux concevoir, tester, deployer et maintenir une solution de bout en bout."
             />
 
             <div className="grid gap-4">
               <GlassCard className="p-6">
                 <p className="text-sm text-zinc-400">Aujourd'hui</p>
                 <p className="mt-3 text-lg leading-8 text-zinc-200">
-                  Je conçois et déploie des applications et architectures modernes autour des
-                  API REST sécurisées, de l'authentification JWT / Keycloak, de Docker et des
-                  pipelines CI/CD. Mon approche relie naturellement développement web, systèmes,
-                  réseaux et mise en production.
+                  Je travaille sur des applications et architectures modernes autour de Python /
+                  Django, Next.js / NestJS, API REST, Docker et des pipelines CI/CD. Mon approche
+                  relie naturellement backend, systemes, reseaux et mise en production.
                 </p>
               </GlassCard>
 
               <div className="grid gap-4 sm:grid-cols-2">
                 <GlassCard className="p-6">
                   <p className="text-sm text-zinc-400">Experience recente</p>
-                  <p className="mt-2 text-xl font-semibold text-white">Stage Studelecta - Paris</p>
+                  <p className="mt-2 text-xl font-semibold text-white">Stage backend Bowo - Paris</p>
                   <p className="mt-3 leading-7 text-zinc-300">
-                    Développement, tests et déploiement d'une plateforme web full-stack avec
-                    Next.js, NestJS, MongoDB, Render et Vercel dans un environnement Agile.
+                    Developpement et maintenance backend avec Python / Django, optimisation d'API
+                    REST, corrections d'anomalies et travail en environnement Agile.
                   </p>
                 </GlassCard>
 
@@ -531,10 +781,10 @@ export default function App() {
                 </GlassCard>
               </div>
 
-              <div className="grid gap-4 sm:grid-cols-3">
+              <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
                 {[
                   ["Formation", "SUPINFO Bachelor 3, apres un parcours ESIEA en sciences et technologies du numerique."],
-                  ["Sujets que j'aime", "Automatisation, cybersécurité, environnements Linux, virtualisation et déploiement."],
+                  ["Sujets que j'aime", "Automatisation, cybersecurite, environnements Linux, virtualisation et deploiement."],
                   ["Maniere de travailler", "Esprit d'analyse, autonomie, rigueur, communication claire et travail en equipe."],
                 ].map(([label, text]) => (
                   <GlassCard key={label} className="p-5">
@@ -542,6 +792,84 @@ export default function App() {
                     <p className="mt-3 leading-7 text-zinc-200">{text}</p>
                   </GlassCard>
                 ))}
+              </div>
+
+              <div className="grid gap-4 xl:grid-cols-[1.2fr_0.8fr]">
+                <Motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, amount: 0.2 }}
+                  transition={{ duration: 0.4 }}
+                  whileHover={{ y: -6 }}
+                >
+                  <GlassCard className="h-full p-6">
+                    <div className="flex items-center gap-3">
+                      <div className="rounded-2xl border border-cyan-400/20 bg-cyan-400/10 p-3 text-cyan-200">
+                        <UserRound size={18} />
+                      </div>
+                      <p className="text-lg font-semibold text-white">Coordonnees & disponibilite</p>
+                    </div>
+
+                    <div className="mt-6 grid gap-3 sm:grid-cols-2">
+                      {[
+                        "Orly (94310), France",
+                        "+33 7 49 09 39 72",
+                        "farouksalami47@gmail.com",
+                        "Teletravail ou presentiel",
+                        "Alternance DevOps / Cloud",
+                        "Septembre 2026",
+                      ].map((item) => (
+                        <div
+                          key={item}
+                          className="rounded-[1.6rem] border border-white/8 bg-black/20 px-4 py-4 text-base leading-7 text-zinc-200 break-words"
+                        >
+                          {item}
+                        </div>
+                      ))}
+                    </div>
+                  </GlassCard>
+                </Motion.div>
+
+                <div className="grid gap-4">
+                  {profileDetails
+                    .filter((detail) => detail.title !== "Coordonnees")
+                    .map((detail, index) => {
+                      const Icon = detail.icon;
+
+                      return (
+                        <Motion.div
+                          key={detail.title}
+                          initial={{ opacity: 0, y: 20 }}
+                          whileInView={{ opacity: 1, y: 0 }}
+                          viewport={{ once: true, amount: 0.2 }}
+                          transition={{ duration: 0.4, delay: index * 0.06 }}
+                          whileHover={{ y: -6 }}
+                        >
+                          <GlassCard className="h-full p-6">
+                            <div className="flex items-center gap-3">
+                              <div className="rounded-2xl border border-cyan-400/20 bg-cyan-400/10 p-3 text-cyan-200">
+                                <Icon size={18} />
+                              </div>
+                              <p className="text-base font-semibold leading-7 text-white sm:text-lg">
+                                {detail.title}
+                              </p>
+                            </div>
+
+                            <div className="mt-5 space-y-3">
+                              {detail.items.map((item) => (
+                                <p
+                                  key={item}
+                                  className="rounded-2xl border border-white/8 bg-black/20 px-4 py-3 text-base leading-8 text-zinc-200 break-words"
+                                >
+                                  {item}
+                                </p>
+                              ))}
+                            </div>
+                          </GlassCard>
+                        </Motion.div>
+                      );
+                    })}
+                </div>
               </div>
             </div>
           </GlassCard>
@@ -732,40 +1060,74 @@ export default function App() {
             <SectionTitle
               eyebrow="Competences"
               title="Des competences que j'utilise vraiment en projet."
-              description="J'ai transforme cette partie en galerie visuelle pour faire ressortir rapidement les technos, outils et environnements que j'utilise le plus."
+              description="J'ai reorganise cette section par themes, en reprenant les categories et outils presents dans mon CV pour montrer plus clairement mon profil technique."
             />
 
-            <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-              {skillCards.map((skill, index) => (
+            <div className="mt-10 grid gap-6 lg:grid-cols-2">
+              {skillThemes.map((theme, index) => {
+                const Icon = theme.icon;
+
+                return (
                 <Motion.div
-                  key={skill.name}
+                  key={theme.title}
                   initial={{ opacity: 0, y: 18 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, amount: 0.2 }}
-                  transition={{ duration: 0.35, delay: index * 0.03 }}
-                  whileHover={{ y: -10, scale: 1.02 }}
+                  transition={{ duration: 0.35, delay: index * 0.05 }}
+                  whileHover={{ y: -8 }}
                 >
-                  <GlassCard className="group relative h-full overflow-hidden p-6">
+                  <GlassCard className="group relative h-full overflow-hidden p-6 md:p-7">
                     <div
-                      className={`absolute inset-0 bg-gradient-to-br ${skill.accent} opacity-90 transition duration-300 group-hover:opacity-100`}
+                      className={`absolute inset-0 bg-gradient-to-br ${theme.accent} opacity-90 transition duration-300 group-hover:opacity-100`}
                     />
-                    <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.12),transparent_42%)] opacity-60" />
-                    <div className="relative flex min-h-[12.5rem] flex-col items-center justify-center text-center">
-                      <div className="flex h-20 w-20 items-center justify-center rounded-[1.7rem] border border-white/10 bg-white/95 shadow-[0_20px_45px_rgba(0,0,0,0.28)]">
-                        <img
-                          src={skill.icon}
-                          alt={`Logo ${skill.name}`}
-                          className="h-11 w-11 object-contain"
-                          loading="lazy"
-                        />
+                    <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(255,255,255,0.1),transparent_36%)] opacity-70" />
+                    <div className="relative">
+                      <div className="flex items-start gap-4">
+                        <div className="flex h-14 w-14 items-center justify-center rounded-[1.35rem] border border-cyan-300/20 bg-cyan-400/10 text-cyan-200">
+                          <Icon size={24} />
+                        </div>
+                        <div>
+                          <p className="text-xs font-semibold uppercase tracking-[0.26em] text-cyan-200/80">
+                            Theme
+                          </p>
+                          <h3 className="mt-2 text-2xl font-semibold text-white">
+                            {theme.title}
+                          </h3>
+                          <p className="mt-2 max-w-xl text-sm leading-6 text-zinc-300">
+                            {theme.subtitle}
+                          </p>
+                        </div>
                       </div>
-                      <p className="mt-5 text-lg font-semibold tracking-wide text-white">
-                        {skill.name}
-                      </p>
+
+                      <div className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-3">
+                        {theme.items.map((item) => (
+                          <div
+                            key={item.name}
+                            className="flex min-h-[8.75rem] flex-col items-center justify-center rounded-[1.5rem] border border-white/10 bg-black/20 px-3 py-4 text-center shadow-[inset_0_1px_0_rgba(255,255,255,0.05)]"
+                          >
+                            <div className="flex h-14 w-14 items-center justify-center rounded-[1.2rem] border border-white/10 bg-white/95 shadow-[0_14px_30px_rgba(0,0,0,0.24)]">
+                              {item.icon ? (
+                                <img
+                                  src={item.icon}
+                                  alt={`Logo ${item.name}`}
+                                  className="h-8 w-8 object-contain"
+                                  loading="lazy"
+                                />
+                              ) : item.iconComponent ? (
+                                <item.iconComponent size={22} className="text-slate-900" />
+                              ) : null}
+                            </div>
+                            <p className="mt-3 text-sm font-medium leading-5 text-zinc-100 break-words">
+                              {item.name}
+                            </p>
+                          </div>
+                        ))}
+                      </div>
                     </div>
                   </GlassCard>
                 </Motion.div>
-              ))}
+                );
+              })}
             </div>
           </GlassCard>
         </section>
@@ -786,11 +1148,11 @@ export default function App() {
               />
               <div className="mt-8 rounded-[1.8rem] bg-gradient-to-br from-cyan-400 via-sky-400 to-blue-500 p-[1.5px] shadow-[0_20px_60px_rgba(34,211,238,0.15)]">
                 <div className="overflow-hidden rounded-[1.8rem] border border-white/10 bg-[#0a111c] p-3">
-                  <Motion.img
-                    src={cvImage}
-                    alt="CV de Ayinde Farouk Salami"
-                    className="w-full rounded-[1.35rem] object-contain"
-                    whileHover={{ scale: 1.02 }}
+                  <Motion.iframe
+                    src={cvFile}
+                    title="CV de Ayinde Farouk Salami"
+                    className="h-[38rem] w-full rounded-[1.35rem] bg-white"
+                    whileHover={{ scale: 1.01 }}
                     transition={{ duration: 0.35, ease: "easeOut" }}
                   />
                 </div>
@@ -887,3 +1249,4 @@ export default function App() {
     </div>
   );
 }
+
