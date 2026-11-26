@@ -6,10 +6,11 @@ import path from "node:path";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const dist = path.join(root, "dist");
-const SITE = "https://portfolio-farouk.onrender.com";
 
-const { render, locales } = await import(pathToFileURL(path.join(root, "dist-ssr", "entry-server.js")).href);
-let template = await readFile(path.join(dist, "index.html"), "utf8");
+const { render, locales, site } = await import(pathToFileURL(path.join(root, "dist-ssr", "entry-server.js")).href);
+const SITE = site.url.replace(/\/$/, "");
+// Le gabarit HTML contient l'URL Render par défaut : on la remplace par l'URL configurée.
+let template = (await readFile(path.join(dist, "index.html"), "utf8")).replaceAll("https://portfolio-farouk.onrender.com", SITE);
 
 if (!template.includes("<!--app-html-->")) {
   throw new Error("Marqueur <!--app-html--> introuvable dans dist/index.html");
@@ -67,5 +68,19 @@ for (const content of Object.values(locales)) {
   await writeFile(path.join(outDir, "index.html"), html);
   console.log(`Pré-rendu ${locale} OK : ${meta.path} (${(Buffer.byteLength(html) / 1024).toFixed(1)} Ko)`);
 }
+
+// sitemap.xml et robots.txt générés depuis l'URL configurée.
+const today = new Date().toISOString().slice(0, 10);
+const links = Object.values(locales)
+  .map((l) => `    <xhtml:link rel="alternate" hreflang="${l.locale}" href="${SITE}${l.meta.path}" />`)
+  .join("\n");
+const urls = Object.values(locales)
+  .map((l) => `  <url>\n    <loc>${SITE}${l.meta.path}</loc>\n    <lastmod>${today}</lastmod>\n${links}\n  </url>`)
+  .join("\n");
+await writeFile(
+  path.join(dist, "sitemap.xml"),
+  `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">\n${urls}\n</urlset>\n`,
+);
+await writeFile(path.join(dist, "robots.txt"), `User-agent: *\nAllow: /\n\nSitemap: ${SITE}/sitemap.xml\n`);
 
 await rm(path.join(root, "dist-ssr"), { recursive: true, force: true });

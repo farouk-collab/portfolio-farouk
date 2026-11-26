@@ -12,6 +12,9 @@ nvm use            # Node 22 (voir .nvmrc)
 npm ci
 npm run dev        # http://localhost:5173
 npm run check      # lint + build de production
+npm test           # tests unitaires (node --test)
+npm run test:e2e   # tests end-to-end Playwright + audit axe (sur dist/)
+npm run lighthouse # Lighthouse CI avec seuils bloquants
 npm run preview    # sert dist/ en local
 ```
 
@@ -35,7 +38,8 @@ scripts/
 ```
 
 **Mettre à jour le contenu** : textes dans `src/content/fr.js` et `src/content/en.js`, données communes dans `src/content/shared.js`.
-**Mettre à jour le CV** : remplacer `public/cv/ayinde-farouk-salami-cv.pdf` (même nom, l'URL reste stable).
+**Mettre à jour le CV** : remplacer `public/cv/ayinde-farouk-salami-cv.pdf` (FR) ou `ayinde-farouk-salami-cv-en.pdf` (EN), même nom.
+**Changer de domaine** : modifier `site.url` dans `src/content/shared.js` (canonical, Open Graph, sitemap et robots suivent).
 
 ## Sécurité
 
@@ -57,7 +61,9 @@ scripts/
 
 `.github/workflows/ci.yml` à chaque push et PR :
 
-1. `npm ci` → lint → build + pré-rendu → vérification du HTML statique → budget de poids → `npm audit`
+1. `npm ci` → lint → tests unitaires → build + pré-rendu → vérification du HTML statique → budget de poids →
+   `npm audit` → tests end-to-end Playwright (parcours, accessibilité axe, zéro requête tierce, zéro erreur console)
+   → Lighthouse CI (performance ≥ 95, accessibilité / bonnes pratiques / SEO = 100, CLS ≤ 0,05)
 2. Build de l'image Docker + test de fumée (en-têtes de sécurité, contenu FR/EN, vraie 404)
 3. Sur `main` uniquement : déclenchement du déploiement Render (secret `RENDER_DEPLOY_HOOK`),
    attente de la mise en ligne du commit exact (`<meta name="build-commit">`), puis vérification de la production.

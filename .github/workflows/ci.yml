@@ -17,9 +17,9 @@ concurrency:
 
 jobs:
   quality:
-    name: Lint, build & audit
+    name: Lint, tests, build & audit
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
 
@@ -34,6 +34,9 @@ jobs:
       - name: Lint
         run: npm run lint
 
+      - name: Tests unitaires (cohérence FR/EN, données, logos)
+        run: npm test
+
       - name: Build + pré-rendu
         run: npm run build
 
@@ -44,7 +47,10 @@ jobs:
           grep -q "Reliable data" dist/en/index.html
           grep -q '<html lang="en">' dist/en/index.html
           grep -q "ayinde-farouk-salami-cv.pdf" dist/index.html
+          grep -q "ayinde-farouk-salami-cv-en.pdf" dist/en/index.html
           test -f dist/cv/ayinde-farouk-salami-cv.pdf
+          test -f dist/cv/ayinde-farouk-salami-cv-en.pdf
+          test -f dist/sitemap.xml && test -f dist/robots.txt
 
       - name: Budget de poids (dist < 25 Mo)
         run: |
@@ -54,6 +60,26 @@ jobs:
 
       - name: Audit de sécurité des dépendances
         run: npm audit --audit-level=high
+
+      - name: Installation de Chromium (Playwright)
+        run: npx playwright install --with-deps chromium
+
+      - name: Tests end-to-end (parcours, accessibilité axe, aucune requête tierce)
+        run: npm run test:e2e
+
+      - name: Lighthouse CI (performance ≥ 95, accessibilité / bonnes pratiques / SEO = 100)
+        run: npx lhci autorun
+
+      - name: Rapports en cas d'échec
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: rapports-tests
+          path: |
+            playwright-report
+            test-results
+            .lighthouseci
+          retention-days: 7
 
   docker:
     name: Image Docker

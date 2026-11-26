@@ -4,6 +4,8 @@ import { person, pipelineTools, skillItems } from "../content/shared";
 import { TechChip, TechIcon } from "../lib/icons";
 import { brands } from "../lib/brands-map";
 import { ButtonLink, Marquee } from "./ui";
+import DataNetwork from "./DataNetwork";
+import TerminalTicker from "./TerminalTicker";
 
 // Technos du CV qui ont un logo, sans doublon.
 const marqueeTech = [...new Set(skillItems.flatMap((g) => g.items))].filter((tech) => brands[tech]);
@@ -15,7 +17,7 @@ function PipelineVisual() {
   return (
     <figure
       aria-label={t.hero.pipelineLabel}
-      className="relative rounded-3xl border border-white/[0.08] bg-ink-900/80 p-2 shadow-[0_40px_120px_-40px_rgb(45_212_191/0.25)] lg:mt-14"
+      className="border-beam relative rounded-3xl border border-white/[0.08] bg-ink-900/80 p-2 shadow-[0_40px_120px_-40px_rgb(45_212_191/0.25)] lg:mt-14"
     >
       <div className="rounded-[1.35rem] border border-white/[0.05] bg-ink-850">
         <div className="flex items-center justify-between border-b border-white/[0.06] px-5 py-3.5">
@@ -60,6 +62,7 @@ function PipelineVisual() {
             </li>
           ))}
         </ol>
+        <TerminalTicker />
       </div>
       <figcaption className="sr-only">
         {t.hero.pipelineCaption} : {stages.map((s) => `${s.step} (${s.tools})`).join(", ")}.
@@ -72,7 +75,10 @@ export default function Hero() {
   const t = useContent();
 
   return (
-    <section id="top" aria-labelledby="hero-title" className="relative pb-16 pt-12 sm:pt-20 lg:pb-24 lg:pt-24">
+    <section id="top" aria-labelledby="hero-title" className="relative isolate pb-16 pt-12 sm:pt-20 lg:pb-24 lg:pt-24">
+      <div className="absolute -inset-x-5 inset-y-0 -z-10 sm:-inset-x-8">
+        <DataNetwork />
+      </div>
       <div className="grid items-start gap-14 lg:grid-cols-[1.15fr_0.85fr] lg:gap-16">
         <div>
           <p className="inline-flex items-center gap-2.5 rounded-full border border-emerald-400/20 bg-emerald-400/[0.07] px-3.5 py-1.5 text-sm text-emerald-200">
@@ -107,7 +113,7 @@ export default function Hero() {
               {t.hero.ctaProjects}
               <ArrowRight size={16} aria-hidden="true" />
             </ButtonLink>
-            <ButtonLink href={person.cv} download variant="secondary">
+            <ButtonLink href={t.cv.file} download variant="secondary">
               <Download size={16} aria-hidden="true" />
               {t.hero.ctaCv}
             </ButtonLink>

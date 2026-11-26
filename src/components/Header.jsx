@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Download, Menu, X } from "lucide-react";
 import { useContent } from "../content";
 import { person, sectionIds } from "../content/shared";
+import CommandPalette from "./CommandPalette";
 
 export default function Header() {
   const t = useContent();
@@ -76,6 +77,7 @@ export default function Header() {
         </nav>
 
         <div className="flex items-center gap-2">
+          <CommandPalette />
           <a
             href={t.ui.lang.href}
             hrefLang={t.ui.lang.hreflang}
@@ -87,7 +89,7 @@ export default function Header() {
             <span className="sr-only">{t.ui.lang.label}</span>
           </a>
           <a
-            href={person.cv}
+            href={t.cv.file}
             download
             className="inline-flex items-center gap-2 rounded-full border border-accent-300/30 bg-accent-300/10 px-4 py-2 text-sm font-semibold text-accent-200 transition-colors hover:bg-accent-300/20"
           >

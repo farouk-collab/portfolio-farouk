@@ -22,6 +22,20 @@ export default {
     lang: { href: "/", short: "FR", label: "Lire cette page en français", hreflang: "fr" },
   },
   nav: ["Profile", "Experience", "Projects", "Skills", "Education", "Contact"],
+  palette: {
+    open: "Open the command palette",
+    placeholder: "Search a section or an action…",
+    empty: "No results",
+    sections: "Sections",
+    actions: "Actions",
+    links: "Links",
+    downloadCv: "Download my CV",
+    copyEmail: "Copy email address",
+    copied: "Address copied",
+    switchLang: "Lire en français",
+    source: "Source code of this site",
+    hint: "↑↓ navigate · Enter select",
+  },
   hero: {
     availability: "Available now · apprenticeship",
     role: "Data Engineer / MLOps Apprentice",
@@ -207,7 +221,7 @@ export default {
       },
       {
         title: "GitHub Actions CI/CD",
-        text: "Every push runs lint, build, audit and a Docker image test, then deploys and verifies production. Dependabot keeps versions current.",
+        text: "Every push goes through lint, unit and end-to-end tests (Playwright), an axe accessibility audit, Lighthouse with blocking thresholds and a Docker image test, then deploys and verifies production.",
       },
       {
         title: "Containerised",
@@ -228,9 +242,10 @@ export default {
     ],
   },
   cv: {
+    file: "/cv/ayinde-farouk-salami-cv-en.pdf",
     label: "Résumé",
     title: "My whole path on one page.",
-    meta: "One-page PDF (in French) · updated November 2026.",
+    meta: "One-page PDF · updated November 2026.",
     download: "Download",
     open: "Open",
   },
