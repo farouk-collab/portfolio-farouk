@@ -54,11 +54,11 @@ export function CvBand() {
             <p className="mt-3 text-slate-400">{t.cv.meta}</p>
           </div>
           <div className="flex flex-wrap gap-3">
-            <ButtonLink href={person.cv} download>
+            <ButtonLink href={t.cv.file} download>
               <Download size={16} aria-hidden="true" />
               {t.cv.download}
             </ButtonLink>
-            <ButtonLink href={person.cv} target="_blank" rel="noopener" variant="secondary">
+            <ButtonLink href={t.cv.file} target="_blank" rel="noopener" variant="secondary">
               {t.cv.open}
               <ExternalLink size={15} aria-hidden="true" />
               <span className="sr-only">{t.ui.newTab}</span>

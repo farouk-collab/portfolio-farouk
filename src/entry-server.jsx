@@ -4,6 +4,7 @@ import App from "./App";
 import { locales } from "./content";
 
 export { locales };
+export { site } from "./content/shared";
 
 export function render(locale) {
   return renderToString(

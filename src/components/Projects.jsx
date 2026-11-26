@@ -2,6 +2,7 @@ import { useState } from "react";
 import { ArrowUpRight, Play } from "lucide-react";
 import { useContent } from "../content";
 import { categoryIds, person, projectMeta, projectOrder } from "../content/shared";
+import { projectMedia } from "../content/media";
 import { TechChip, TechIcon } from "../lib/icons";
 import { Card, Section } from "./ui";
 
@@ -59,7 +60,7 @@ function ProjectCard({ project }) {
         as="article"
         spotlight
         className={`h-full p-5 transition-colors hover:border-white/15 sm:p-6 ${
-          featured ? "grid gap-6 lg:grid-cols-[1.35fr_1fr] lg:items-center lg:gap-10" : "flex flex-col"
+          featured ? "border-beam grid gap-6 lg:grid-cols-[1.35fr_1fr] lg:items-center lg:gap-10" : "flex flex-col"
         }`}
       >
         {project.media ? (
@@ -122,7 +123,7 @@ export default function Projects() {
   const [filter, setFilter] = useState("all");
   const [hasFiltered, setHasFiltered] = useState(false);
 
-  const projects = projectOrder.map((id) => ({ id, ...projectMeta[id], ...t.projects.items[id] }));
+  const projects = projectOrder.map((id) => ({ id, ...projectMeta[id], media: projectMedia[id], ...t.projects.items[id] }));
   const visible = filter === "all" ? projects : projects.filter((p) => p.category === filter);
 
   return (

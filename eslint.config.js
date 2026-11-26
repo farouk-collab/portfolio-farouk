@@ -23,8 +23,14 @@ export default defineConfig([
     rules: { "react-refresh/only-export-components": "off" },
   },
   {
-    files: ["scripts/**/*.mjs", "*.config.js"],
+    files: ["scripts/**/*.mjs", "*.config.js", "tests/**/*.js"],
     extends: [js.configs.recommended],
     languageOptions: { ecmaVersion: "latest", sourceType: "module", globals: globals.node },
+  },
+  {
+    // Playwright : le code de page.evaluate s'exécute dans le navigateur ; les hooks exigent `({}, testInfo)`.
+    files: ["tests/e2e/**/*.js"],
+    languageOptions: { globals: { ...globals.node, ...globals.browser } },
+    rules: { "no-empty-pattern": "off" },
   },
 ]);

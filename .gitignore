@@ -27,3 +27,8 @@ dist-ssr
 src/assets/tech-icons.svg
 src/assets/brand-colors.json
 dist-ssr
+
+# Tests
+playwright-report
+test-results
+.lighthouseci

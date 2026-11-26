@@ -6,3 +6,7 @@ dist-ssr
 *.log
 Dockerfile
 .dockerignore
+tests
+playwright-report
+test-results
+.lighthouseci

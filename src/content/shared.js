@@ -1,12 +1,8 @@
-// Données indépendantes de la langue (liens, médias, stacks). Les textes sont dans fr.js / en.js.
+// Données indépendantes de la langue (liens, stacks, dates). Textes : fr.js / en.js ; médias : media.js.
+// Ce fichier reste du JavaScript pur (aucun import d'asset) pour être testable avec node --test.
 
-import supcontentVideo from "../assets/media/supcontent.mp4";
-import supcontentPoster from "../assets/media/supcontent.webp";
-import pepsVideo from "../assets/media/peps-gallery.mp4";
-import pepsPoster from "../assets/media/peps-gallery.webp";
-import hotelVideo from "../assets/media/hotel-le-morphee.mp4";
-import hotelPoster from "../assets/media/hotel-le-morphee.webp";
 
+// URL publique du site : seule valeur à changer pour passer sur un domaine personnel.
 export const site = {
   url: "https://portfolio-farouk.onrender.com",
   repo: "https://github.com/farouk-collab/portfolio-farouk",
@@ -19,7 +15,6 @@ export const person = {
   github: "https://github.com/farouk-collab",
   githubHandle: "farouk-collab",
   linkedin: "https://www.linkedin.com/in/ayinde-farouk-salami-1946951b0",
-  cv: "/cv/ayinde-farouk-salami-cv.pdf",
 };
 
 export const sectionIds = ["profil", "experiences", "projets", "competences", "formation", "contact"];
@@ -59,7 +54,6 @@ export const projectMeta = {
     period: "11/2025 – 01/2026",
     stack: ["Node.js", "TypeScript", "Express", "JWT", "OAuth2", "Render"],
     repo: "https://github.com/farouk-collab/supcontent-music",
-    media: { video: supcontentVideo, poster: supcontentPoster, duration: "2:41" },
   },
   sante: { category: "data", period: "03/2026 – 04/2026", stack: ["Python", "pandas"] },
   ventes: { category: "data", period: "03/2026", stack: ["Python", "pandas", "Power BI"] },
@@ -74,13 +68,11 @@ export const projectMeta = {
     title: "Peps Gallery",
     stack: ["TypeScript", "Next.js"],
     repo: "https://github.com/farouk-collab/Peps-Gallery",
-    media: { video: pepsVideo, poster: pepsPoster, duration: "1:32" },
   },
   hotel: {
     category: "web",
     stack: ["JavaScript", "HTML", "CSS"],
     repo: "https://github.com/farouk-collab/H-tel-Le-Morph-e",
-    media: { video: hotelVideo, poster: hotelPoster, duration: "1:30" },
   },
 };
 

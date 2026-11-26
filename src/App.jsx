@@ -23,6 +23,8 @@ function Page() {
         {t.ui.skip}
       </a>
 
+      <div aria-hidden="true" className="scroll-progress" />
+
       <div aria-hidden="true" className="pointer-events-none absolute inset-x-0 top-0 -z-0 h-[70rem] overflow-hidden">
         <div className="bg-grid absolute inset-0" />
         <div className="absolute left-1/2 top-[-18rem] h-[42rem] w-[60rem] -translate-x-1/2 rounded-full bg-[radial-gradient(closest-side,rgb(45_212_191/0.14),transparent)]" />
