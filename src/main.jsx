@@ -4,6 +4,7 @@ import "@fontsource-variable/inter";
 import "@fontsource-variable/space-grotesk";
 import "@fontsource-variable/jetbrains-mono";
 import "./index.css";
+import "./assets/brand-colors.css";
 import App from "./App";
 import { localeFromPath } from "./content";
 

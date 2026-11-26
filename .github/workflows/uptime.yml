@@ -1,0 +1,83 @@
+name: Surveillance
+
+# Vérifie la production toutes les 30 minutes. En cas de problème, ouvre (ou complète) une issue
+# « incident » — GitHub envoie alors une notification email — puis la ferme au retour à la normale.
+on:
+  schedule:
+    - cron: "*/30 * * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+concurrency:
+  group: surveillance
+  cancel-in-progress: false
+
+jobs:
+  check:
+    name: Disponibilité et conformité de la production
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    env:
+      SITE: https://portfolio-farouk.onrender.com
+      GH_TOKEN: ${{ github.token }}
+      GH_REPO: ${{ github.repository }}
+      TITLE: "Incident : site indisponible ou non conforme"
+    steps:
+      - name: Contrôles de production
+        id: check
+        run: |
+          problems=()
+          for path in / /en/ /cv/ayinde-farouk-salami-cv.pdf /cv/ayinde-farouk-salami-cv-en.pdf; do
+            code=$(curl -s -o /dev/null -w '%{http_code}' --max-time 20 --retry 2 --retry-delay 10 "$SITE$path")
+            [ "$code" = "200" ] || problems+=("\`$path\` répond HTTP $code")
+          done
+
+          headers=$(curl -sI --max-time 20 --retry 2 "$SITE/")
+          for h in content-security-policy strict-transport-security x-frame-options x-content-type-options referrer-policy permissions-policy; do
+            echo "$headers" | grep -qi "^$h:" || problems+=("en-tête manquant : \`$h\`")
+          done
+          if echo "$headers" | grep -i '^content-security-policy:' | grep -q "unsafe-inline"; then
+            problems+=("la CSP contient \`unsafe-inline\`")
+          fi
+
+          curl -s --max-time 20 "$SITE/" | grep -q "Des données fiables" || problems+=("contenu FR introuvable sur \`/\`")
+          curl -s --max-time 20 "$SITE/en/" | grep -q "Reliable data" || problems+=("contenu EN introuvable sur \`/en/\`")
+
+          total=$(curl -s -o /dev/null -w '%{time_total}' --max-time 20 "$SITE/")
+          echo "Temps de réponse de la page d'accueil : ${total} s"
+
+          if [ ${#problems[@]} -eq 0 ]; then
+            echo "Production conforme."
+            echo "ok=true" >> "$GITHUB_OUTPUT"
+          else
+            {
+              echo "Problèmes détectés sur $SITE :"
+              echo
+              for p in "${problems[@]}"; do echo "- $p"; done
+              echo
+              echo "Détecté le $(date -u '+%Y-%m-%d %H:%M UTC') — [voir le run]($GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID)."
+            } | tee report.md
+            echo "ok=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Ouverture ou mise à jour de l'incident
+        if: steps.check.outputs.ok == 'false'
+        run: |
+          gh label create incident --color B60205 --description "Détecté par la surveillance" 2>/dev/null || true
+          number=$(gh issue list --state open --label incident --json number --jq '.[0].number // empty')
+          if [ -z "$number" ]; then
+            gh issue create --title "$TITLE" --label incident --body-file report.md
+          else
+            gh issue comment "$number" --body-file report.md
+          fi
+          exit 1
+
+      - name: Clôture des incidents résolus
+        if: steps.check.outputs.ok == 'true'
+        run: |
+          for number in $(gh issue list --state open --label incident --json number --jq '.[].number'); do
+            gh issue close "$number" --comment "Résolu : production de nouveau conforme ($(date -u '+%Y-%m-%d %H:%M UTC'))."
+          done

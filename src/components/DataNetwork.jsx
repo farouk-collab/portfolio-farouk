@@ -141,8 +141,7 @@ export default function DataNetwork() {
     <canvas
       ref={ref}
       aria-hidden="true"
-      style={{ opacity: 0 }}
-      className="pointer-events-none absolute inset-0 h-full w-full transition-opacity duration-[1500ms] [mask-image:radial-gradient(ellipse_75%_70%_at_50%_40%,#000_35%,transparent_100%)]"
+      className="opacity-0 pointer-events-none absolute inset-0 h-full w-full transition-opacity duration-[1500ms] [mask-image:radial-gradient(ellipse_75%_70%_at_50%_40%,#000_35%,transparent_100%)]"
     />
   );
 }

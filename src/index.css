@@ -49,6 +49,15 @@ body {
   border-radius: 0.5rem;
 }
 
+/* Halo des cartes : position fournie par JS via --mx / --my (CSSOM, autorisé par la CSP). */
+.spotlight-glow {
+  background: radial-gradient(380px circle at var(--mx, 50%) var(--my, 0%), rgb(94 234 212 / 0.09), transparent 65%);
+}
+
+.brand-default {
+  --brand: var(--color-accent-300);
+}
+
 .text-balance {
   text-wrap: balance;
 }

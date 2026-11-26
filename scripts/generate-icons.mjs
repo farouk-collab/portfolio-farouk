@@ -29,5 +29,9 @@ await writeFile(
   path.join(outDir, "tech-icons.svg"),
   `<svg xmlns="http://www.w3.org/2000/svg">${symbols.join("")}</svg>\n`,
 );
-await writeFile(path.join(outDir, "brand-colors.json"), `${JSON.stringify(colors, null, 2)}\n`);
+// Une classe par marque (aucun style en ligne : compatible avec une CSP sans 'unsafe-inline').
+const css = Object.entries(colors)
+  .map(([slug, color]) => `.brand-${slug}{--brand:${color}}`)
+  .join("\n");
+await writeFile(path.join(outDir, "brand-colors.css"), `${css}\n`);
 console.log(`Sprite généré : ${symbols.length} logos`);

@@ -25,7 +25,7 @@ dist-ssr
 
 # Généré au build (scripts/generate-icons.mjs)
 src/assets/tech-icons.svg
-src/assets/brand-colors.json
+src/assets/brand-colors.css
 dist-ssr
 
 # Tests

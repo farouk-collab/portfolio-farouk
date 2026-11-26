@@ -16,13 +16,6 @@ if (!template.includes("<!--app-html-->")) {
   throw new Error("Marqueur <!--app-html--> introuvable dans dist/index.html");
 }
 
-// CSS intégrée (supprime une requête bloquante avant le premier affichage).
-const cssLink = template.match(/<link rel="stylesheet"[^>]*href="(\/assets\/[^"]+\.css)"[^>]*>/);
-if (cssLink) {
-  const css = await readFile(path.join(dist, cssLink[1]), "utf8");
-  template = template.replace(cssLink[0], () => `<style>${css}</style>`);
-}
-
 // Préchargement des deux polices visibles au-dessus de la ligne de flottaison.
 const assets = await readdir(path.join(dist, "assets"));
 const preloads = ["space-grotesk-latin-wght-normal", "inter-latin-wght-normal"]
