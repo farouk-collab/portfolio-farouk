@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import { ArrowRight, Command, Copy, Download, ExternalLink, Hash, Languages, Search } from "lucide-react";
+import { ArrowRight, Command, Copy, Download, ExternalLink, Hash, Languages, Phone, Search } from "lucide-react";
 import { useContent } from "../content";
 import { person, sectionIds, site } from "../content/shared";
 import { TechIcon } from "../lib/icons";
@@ -51,6 +51,14 @@ export default function CommandPalette() {
           } catch {
             window.location.href = `mailto:${person.email}`;
           }
+        },
+      },
+      {
+        group: p.actions,
+        label: p.callPhone,
+        icon: <Phone size={15} aria-hidden="true" />,
+        run: () => {
+          window.location.href = `tel:${person.phone}`;
         },
       },
       {

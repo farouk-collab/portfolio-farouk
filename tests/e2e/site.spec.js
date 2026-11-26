@@ -2,8 +2,8 @@ import { expect, test } from "@playwright/test";
 import AxeBuilder from "@axe-core/playwright";
 
 const pages = [
-  { path: "/", lang: "fr", tagline: "Des données fiables", cv: "/cv/ayinde-farouk-salami-cv.pdf" },
-  { path: "/en/", lang: "en", tagline: "Reliable data", cv: "/cv/ayinde-farouk-salami-cv-en.pdf" },
+  { path: "/", lang: "fr", tagline: "Des données fiables", cv: "/cv/ayinde-farouk-salami-cv.pdf", phone: "07 49 09 39 72" },
+  { path: "/en/", lang: "en", tagline: "Reliable data", cv: "/cv/ayinde-farouk-salami-cv-en.pdf", phone: "+33 7 49 09 39 72" },
 ];
 
 // Échoue sur toute erreur console (dont les erreurs d'hydratation) et toute requête vers un autre domaine.
@@ -41,6 +41,13 @@ for (const p of pages) {
       const res = await request.get(p.cv);
       expect(res.status()).toBe(200);
       expect(res.headers()["content-type"]).toContain("pdf");
+    });
+
+    test("le téléphone est affiché et cliquable", async ({ page }) => {
+      await page.goto(p.path);
+      const tel = page.locator("#contact a[href=\"tel:+33749093972\"]");
+      await expect(tel).toContainText(p.phone);
+      await expect(tel).not.toHaveAttribute("target", "_blank");
     });
 
     test("aucune violation d'accessibilité (WCAG 2.1 AA)", async ({ page }) => {
