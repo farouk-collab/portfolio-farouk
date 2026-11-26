@@ -1,4 +1,4 @@
-import { ArrowRight, Download, Mail } from "lucide-react";
+import { ArrowRight, Download, Mail, Phone } from "lucide-react";
 import { useContent } from "../content";
 import { person, pipelineTools, skillItems } from "../content/shared";
 import { TechChip, TechIcon } from "../lib/icons";
@@ -142,6 +142,13 @@ export default function Hero() {
               >
                 <Mail size={19} aria-hidden="true" />
                 <span className="sr-only">{t.hero.emailAria}</span>
+              </a>
+              <a
+                href={`tel:${person.phone}`}
+                className="grid h-11 w-11 place-items-center rounded-full text-slate-400 transition-colors hover:bg-white/[0.05] hover:text-white"
+              >
+                <Phone size={18} aria-hidden="true" />
+                <span className="sr-only">{t.palette.callPhone}</span>
               </a>
             </div>
           </div>

@@ -12,6 +12,7 @@ export const person = {
   name: "Ayinde Farouk Salami",
   initials: "AF",
   email: "farouksalami47@gmail.com",
+  phone: "+33749093972",
   github: "https://github.com/farouk-collab",
   githubHandle: "farouk-collab",
   linkedin: "https://www.linkedin.com/in/ayinde-farouk-salami-1946951b0",

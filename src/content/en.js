@@ -23,6 +23,7 @@ export default {
   },
   nav: ["Profile", "Experience", "Projects", "Skills", "Education", "Contact"],
   palette: {
+    callPhone: "Call +33 7 49 09 39 72",
     open: "Open the command palette",
     placeholder: "Search a section or an action…",
     empty: "No results",
@@ -250,6 +251,8 @@ export default {
     open: "Open",
   },
   contact: {
+    phoneLabel: "Phone",
+    phoneDisplay: "+33 7 49 09 39 72",
     eyebrow: "Contact",
     title: "Let's build your next data pipeline.",
     intro:

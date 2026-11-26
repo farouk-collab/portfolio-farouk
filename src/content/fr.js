@@ -23,6 +23,7 @@ export default {
   },
   nav: ["Profil", "Expériences", "Projets", "Compétences", "Formation", "Contact"],
   palette: {
+    callPhone: "Appeler 07 49 09 39 72",
     open: "Ouvrir la palette de commandes",
     placeholder: "Rechercher une section ou une action…",
     empty: "Aucun résultat",
@@ -251,6 +252,8 @@ export default {
     open: "Ouvrir",
   },
   contact: {
+    phoneLabel: "Téléphone",
+    phoneDisplay: "07 49 09 39 72",
     eyebrow: "Contact",
     title: "Construisons votre prochaine pipeline de données.",
     intro:

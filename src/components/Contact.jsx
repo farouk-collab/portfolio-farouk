@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { ArrowUpRight, Check, Copy, Download, ExternalLink, Mail } from "lucide-react";
+import { ArrowUpRight, Check, Copy, Download, ExternalLink, Mail, Phone } from "lucide-react";
 import { useContent } from "../content";
 import { person } from "../content/shared";
 import { TechIcon } from "../lib/icons";
@@ -75,6 +75,13 @@ export default function Contact() {
   const c = t.contact;
   const links = [
     {
+      label: c.phoneLabel,
+      value: c.phoneDisplay,
+      href: `tel:${person.phone}`,
+      icon: <Phone size={18} aria-hidden="true" />,
+      internal: true,
+    },
+    {
       label: "LinkedIn",
       value: person.name,
       href: person.linkedin,
@@ -115,8 +122,8 @@ export default function Contact() {
             <Reveal key={link.label} delay={0.06 * (i + 1)}>
               <a
                 href={link.href}
-                target="_blank"
-                rel="noopener noreferrer"
+                target={link.internal ? undefined : "_blank"}
+                rel={link.internal ? undefined : "noopener noreferrer"}
                 className="group flex h-full items-center gap-4 rounded-2xl border border-white/[0.07] bg-white/[0.02] p-6 transition-colors hover:border-accent-300/30 hover:bg-white/[0.04]"
               >
                 <span className="grid h-11 w-11 place-items-center rounded-xl border border-white/10 bg-white/[0.04] text-slate-200">
@@ -131,7 +138,7 @@ export default function Contact() {
                   aria-hidden="true"
                   className="text-slate-400 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-accent-200"
                 />
-                <span className="sr-only">{t.ui.newTab}</span>
+                {link.internal ? null : <span className="sr-only">{t.ui.newTab}</span>}
               </a>
             </Reveal>
           ))}
