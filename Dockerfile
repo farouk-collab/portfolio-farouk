@@ -1,7 +1,7 @@
 # syntax=docker/dockerfile:1
 
 # --- Étape 1 : build (Node 22, dépendances verrouillées) ---
-FROM node:22.20-alpine AS build
+FROM node:26.13-alpine AS build
 WORKDIR /app
 COPY package.json package-lock.json ./
 RUN npm ci --no-audit --no-fund
