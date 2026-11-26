@@ -1,10 +1,21 @@
-import React from "react";
-import ReactDOM from "react-dom/client";
-import App from "./App";
+import { StrictMode } from "react";
+import { createRoot, hydrateRoot } from "react-dom/client";
+import "@fontsource-variable/inter";
+import "@fontsource-variable/space-grotesk";
+import "@fontsource-variable/jetbrains-mono";
 import "./index.css";
+import App from "./App";
 
-ReactDOM.createRoot(document.getElementById("root")).render(
-  <React.StrictMode>
+const container = document.getElementById("root");
+const app = (
+  <StrictMode>
     <App />
-  </React.StrictMode>
+  </StrictMode>
 );
+
+// Le HTML est pré-rendu au build : on l'hydrate. En dev (HTML vide), rendu client classique.
+if (container.hasChildNodes()) {
+  hydrateRoot(container, app);
+} else {
+  createRoot(container).render(app);
+}

@@ -22,3 +22,8 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Généré au build (scripts/generate-icons.mjs)
+src/assets/tech-icons.svg
+src/assets/brand-colors.json
+dist-ssr

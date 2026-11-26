@@ -1,46 +1,123 @@
 @import "tailwindcss";
 
+@theme {
+  --font-sans: "Inter Variable", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-display: "Space Grotesk Variable", "Inter Variable", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono Variable", ui-monospace, "Cascadia Code", Consolas, monospace;
+
+  --color-ink-950: #05070c;
+  --color-ink-900: #090d16;
+  --color-ink-850: #0c111d;
+  --color-ink-800: #121a2b;
+
+  --color-accent-200: #99f6e4;
+  --color-accent-300: #5eead4;
+  --color-accent-400: #2dd4bf;
+  --color-accent-500: #14b8a6;
+}
+
 :root {
   color-scheme: dark;
-  font-family:
-    "Segoe UI Variable",
-    "Aptos",
-    "Trebuchet MS",
-    "Segoe UI",
-    sans-serif;
-  background:
-    radial-gradient(circle at top, rgba(56, 189, 248, 0.16), transparent 28%),
-    radial-gradient(circle at 80% 12%, rgba(59, 130, 246, 0.1), transparent 22%),
-    linear-gradient(180deg, #050816 0%, #06111b 45%, #04070f 100%);
 }
 
 html {
+  background: var(--color-ink-950);
   scroll-behavior: smooth;
+  scroll-padding-top: 5rem;
 }
 
 body {
   margin: 0;
   min-width: 320px;
-  min-height: 100vh;
-  background: transparent;
-  color: #f5f7f6;
+  background: var(--color-ink-950);
+  color: #cbd5e1;
+  font-family: var(--font-sans);
+  font-feature-settings: "cv11", "ss01";
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-a {
-  color: inherit;
-  text-decoration: none;
+::selection {
+  background: rgb(45 212 191 / 0.3);
+  color: #fff;
 }
 
-button,
-input,
-textarea,
-select {
-  font: inherit;
+:focus-visible {
+  outline: 2px solid var(--color-accent-300);
+  outline-offset: 3px;
+  border-radius: 0.5rem;
 }
 
-#root {
-  min-height: 100vh;
+.text-balance {
+  text-wrap: balance;
+}
+
+/* Fond : grille discrète + halos statiques (aucune animation coûteuse en continu). */
+.bg-grid {
+  background-image:
+    linear-gradient(to right, rgb(148 163 184 / 0.07) 1px, transparent 1px),
+    linear-gradient(to bottom, rgb(148 163 184 / 0.07) 1px, transparent 1px);
+  background-size: 56px 56px;
+  mask-image: radial-gradient(ellipse 70% 55% at 50% 0%, #000 30%, transparent 100%);
+}
+
+.text-gradient {
+  background: linear-gradient(100deg, #99f6e4 0%, #5eead4 35%, #7dd3fc 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Paquet de données qui parcourt la pipeline du hero. */
+/* Uniquement transform + opacity : animé par le compositeur, sans recalcul de mise en page. */
+@keyframes packet {
+  0% { transform: translateY(0); opacity: 0; }
+  8% { opacity: 1; }
+  92% { opacity: 1; }
+  100% { transform: translateY(100%); opacity: 0; }
+}
+
+.pipeline-packet {
+  animation: packet 5.6s cubic-bezier(0.45, 0, 0.55, 1) infinite;
+  will-change: transform, opacity;
+}
+
+@keyframes card-enter {
+  from { opacity: 0; transform: translateY(8px); }
+}
+
+/* Uniquement lors d'un changement de filtre (pas au premier affichage pré-rendu). */
+.filtering .card-enter {
+  animation: card-enter 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@keyframes marquee {
+  to { transform: translateX(-100%); }
+}
+
+.marquee-track {
+  animation: marquee 45s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .marquee-track {
+    animation: none !important;
+  }
+
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .pipeline-packet {
+    display: none;
+  }
 }
