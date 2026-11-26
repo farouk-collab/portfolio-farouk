@@ -2,10 +2,72 @@ services:
   - type: web
     name: portfolio-farouk
     runtime: static
-    buildCommand: npm install && npm run build
+    # npm ci : installation stricte depuis le lockfile, builds reproductibles.
+    buildCommand: npm ci && npm run build
     staticPublishPath: dist
-    pullRequestPreviewsEnabled: true
+    pullRequestPreviewsEnabled: false
+    envVars:
+      - key: NODE_VERSION
+        value: 22.20.0
+
+    # Anciennes URL du CV : redirigées vers la version actuelle.
     routes:
-      - type: rewrite
-        source: /*
-        destination: /index.html
+      - type: redirect
+        source: /cv/cv-farouk.pdf
+        destination: /cv/ayinde-farouk-salami-cv.pdf
+      - type: redirect
+        source: /cv/cv-farouk-2026-05-12.pdf
+        destination: /cv/ayinde-farouk-salami-cv.pdf
+      - type: redirect
+        source: /cv/cv-farouk-2026-05-13.pdf
+        destination: /cv/ayinde-farouk-salami-cv.pdf
+      - type: redirect
+        source: /cv/cv-farouk-2026-07-09.pdf
+        destination: /cv/ayinde-farouk-salami-cv.pdf
+
+    headers:
+      # --- Sécurité (toutes les réponses) ---
+      - path: /*
+        name: X-Content-Type-Options
+        value: nosniff
+      - path: /*
+        name: X-Frame-Options
+        value: DENY
+      - path: /*
+        name: Referrer-Policy
+        value: strict-origin-when-cross-origin
+      - path: /*
+        name: Permissions-Policy
+        value: "camera=(), microphone=(), geolocation=(), payment=(), usb=(), interest-cohort=()"
+      - path: /*
+        name: Cross-Origin-Opener-Policy
+        value: same-origin
+      - path: /*
+        name: Cross-Origin-Resource-Policy
+        value: same-origin
+      - path: /*
+        name: Strict-Transport-Security
+        value: "max-age=63072000; includeSubDomains; preload"
+      # CSP sur les documents HTML : aucune source tierce, aucun script inline.
+      - path: /
+        name: Content-Security-Policy
+        value: "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; media-src 'self'; connect-src 'self'; manifest-src 'self'; object-src 'none'; frame-src 'none'; frame-ancestors 'none'; base-uri 'self'; form-action 'none'; upgrade-insecure-requests"
+      - path: /index.html
+        name: Content-Security-Policy
+        value: "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; media-src 'self'; connect-src 'self'; manifest-src 'self'; object-src 'none'; frame-src 'none'; frame-ancestors 'none'; base-uri 'self'; form-action 'none'; upgrade-insecure-requests"
+      - path: /404.html
+        name: Content-Security-Policy
+        value: "default-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self'; object-src 'none'; frame-ancestors 'none'; base-uri 'self'; form-action 'none'"
+
+      # --- Cache ---
+      # Fichiers versionnés par hash : cache d'un an, immuable.
+      - path: /assets/*
+        name: Cache-Control
+        value: "public, max-age=31536000, immutable"
+      # HTML et CV : toujours revalidés pour refléter la dernière version.
+      - path: /
+        name: Cache-Control
+        value: "no-cache"
+      - path: /cv/*
+        name: Cache-Control
+        value: "public, max-age=0, must-revalidate"

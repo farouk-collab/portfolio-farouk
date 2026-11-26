@@ -1,0 +1,13 @@
+{
+  "name": "Ayinde Farouk Salami — Data Engineer / MLOps",
+  "short_name": "Farouk Salami",
+  "lang": "fr",
+  "start_url": "/",
+  "display": "browser",
+  "background_color": "#05070c",
+  "theme_color": "#05070c",
+  "icons": [
+    { "src": "/favicon.svg", "type": "image/svg+xml", "sizes": "any" },
+    { "src": "/apple-touch-icon.png", "type": "image/png", "sizes": "180x180" }
+  ]
+}
