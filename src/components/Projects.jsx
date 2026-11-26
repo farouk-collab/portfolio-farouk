@@ -1,11 +1,13 @@
 import { useState } from "react";
 import { ArrowUpRight, Play } from "lucide-react";
-import { person, projectCategories, projects } from "../data/profile";
+import { useContent } from "../content";
+import { categoryIds, person, projectMeta, projectOrder } from "../content/shared";
 import { TechChip, TechIcon } from "../lib/icons";
 import { Card, Section } from "./ui";
 
 // La vidéo n'est téléchargée qu'au clic : seule une image légère (~35 Ko) est chargée par défaut.
 function VideoPreview({ title, media }) {
+  const t = useContent();
   const [playing, setPlaying] = useState(false);
 
   return (
@@ -20,15 +22,11 @@ function VideoPreview({ title, media }) {
           loop
           playsInline
           controls
-          aria-label={`Démonstration vidéo de ${title}`}
+          aria-label={t.projects.videoAria(title)}
         />
       ) : (
-        <button
-          type="button"
-          onClick={() => setPlaying(true)}
-          className="group/video absolute inset-0 h-full w-full"
-        >
-          <span className="sr-only">Lire la vidéo de démonstration de {title} — </span>
+        <button type="button" onClick={() => setPlaying(true)} className="group/video absolute inset-0 h-full w-full">
+          <span className="sr-only">{t.projects.playVideo(title)}</span>
           <img
             src={media.poster}
             alt=""
@@ -43,7 +41,7 @@ function VideoPreview({ title, media }) {
             <span className="grid h-7 w-7 place-items-center rounded-full bg-accent-300 text-ink-950">
               <Play size={13} fill="currentColor" aria-hidden="true" />
             </span>
-            Démo · {media.duration}
+            {t.projects.demo} · {media.duration}
           </span>
         </button>
       )}
@@ -52,7 +50,7 @@ function VideoPreview({ title, media }) {
 }
 
 function ProjectCard({ project }) {
-  const category = projectCategories.find((c) => c.id === project.category);
+  const t = useContent();
   const featured = Boolean(project.featured);
 
   return (
@@ -71,46 +69,48 @@ function ProjectCard({ project }) {
         ) : null}
 
         <div className="flex h-full flex-col">
-        {featured ? (
-          <p className="mb-3 inline-flex w-fit items-center gap-2 rounded-full bg-accent-300/10 px-2.5 py-1 font-mono text-[0.7rem] uppercase tracking-[0.16em] text-accent-200">
-            Projet phare
-          </p>
-        ) : null}
-        <div className="flex flex-wrap items-center gap-x-3 gap-y-1 font-mono text-xs">
-          <span className="uppercase tracking-[0.16em] text-accent-300">{category?.label}</span>
-          {project.period ? <span className="text-slate-400">{project.period}</span> : null}
-        </div>
-        <h3 className="mt-3 font-display text-xl font-semibold text-white sm:text-2xl">{project.title}</h3>
-        <p className="mt-1 text-slate-300">{project.subtitle}</p>
+          {featured ? (
+            <p className="mb-3 inline-flex w-fit items-center gap-2 rounded-full bg-accent-300/10 px-2.5 py-1 font-mono text-[0.7rem] uppercase tracking-[0.16em] text-accent-200">
+              {t.projects.featured}
+            </p>
+          ) : null}
+          <div className="flex flex-wrap items-center gap-x-3 gap-y-1 font-mono text-xs">
+            <span className="uppercase tracking-[0.16em] text-accent-300">{t.projects.categories[project.category]}</span>
+            {project.period ? <span className="text-slate-400">{project.period}</span> : null}
+          </div>
+          <h3 className="mt-3 font-display text-xl font-semibold text-white sm:text-2xl">{project.title}</h3>
+          <p className="mt-1 text-slate-300">{project.subtitle}</p>
 
-        <ul className="mt-4 flex-1 space-y-2">
-          {project.points.map((point) => (
-            <li key={point} className="flex gap-3 text-[0.95rem] leading-relaxed text-slate-400">
-              <span aria-hidden="true" className="mt-[0.65rem] h-1 w-3 shrink-0 rounded-full bg-white/20" />
-              {point}
-            </li>
-          ))}
-        </ul>
+          <ul className="mt-4 flex-1 space-y-2">
+            {project.points.map((point) => (
+              <li key={point} className="flex gap-3 text-[0.95rem] leading-relaxed text-slate-400">
+                <span aria-hidden="true" className="mt-[0.65rem] h-1 w-3 shrink-0 rounded-full bg-white/20" />
+                {point}
+              </li>
+            ))}
+          </ul>
 
-        <div className="mt-6 flex flex-wrap gap-2">
-          {project.stack.map((tech) => (
-            <TechChip key={tech} name={tech} size="sm" />
-          ))}
-        </div>
+          <div className="mt-6 flex flex-wrap gap-2">
+            {project.stack.map((tech) => (
+              <TechChip key={tech} name={tech} size="sm" />
+            ))}
+          </div>
 
-        {project.repo ? (
-          <a
-            href={project.repo}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="mt-6 inline-flex w-fit items-center gap-2 text-sm font-semibold text-accent-200 transition-colors hover:text-white"
-          >
-            <TechIcon name="GitHub" size={15} />
-            Code source
-            <ArrowUpRight size={15} aria-hidden="true" />
-            <span className="sr-only">(nouvel onglet)</span>
-          </a>
-        ) : null}
+          {project.repo ? (
+            <a
+              href={project.repo}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-6 inline-flex w-fit items-center gap-2 text-sm font-semibold text-accent-200 transition-colors hover:text-white"
+            >
+              <TechIcon name="GitHub" size={15} />
+              {t.projects.source}
+              <ArrowUpRight size={15} aria-hidden="true" />
+              <span className="sr-only">
+                — {project.title} {t.ui.newTab}
+              </span>
+            </a>
+          ) : null}
         </div>
       </Card>
     </li>
@@ -118,28 +118,25 @@ function ProjectCard({ project }) {
 }
 
 export default function Projects() {
+  const t = useContent();
   const [filter, setFilter] = useState("all");
   const [hasFiltered, setHasFiltered] = useState(false);
+
+  const projects = projectOrder.map((id) => ({ id, ...projectMeta[id], ...t.projects.items[id] }));
   const visible = filter === "all" ? projects : projects.filter((p) => p.category === filter);
 
   return (
-    <Section
-      id="projets"
-      index="03"
-      eyebrow="Projets"
-      title="Des projets concrets, de l'analyse de données à la mise en production."
-      intro="Data, backend, infrastructure et web : chaque projet est présenté avec son contexte, ce que j'ai réalisé et la stack utilisée."
-    >
-      <div role="group" aria-label="Filtrer les projets par domaine" className="mb-8 flex flex-wrap gap-2">
-        {projectCategories.map((cat) => {
-          const count = cat.id === "all" ? projects.length : projects.filter((p) => p.category === cat.id).length;
-          const selected = filter === cat.id;
+    <Section id="projets" index="03" eyebrow={t.projects.eyebrow} title={t.projects.title} intro={t.projects.intro}>
+      <div role="group" aria-label={t.projects.filterLabel} className="mb-8 flex flex-wrap gap-2">
+        {categoryIds.map((id) => {
+          const count = id === "all" ? projects.length : projects.filter((p) => p.category === id).length;
+          const selected = filter === id;
           return (
             <button
-              key={cat.id}
+              key={id}
               type="button"
               onClick={() => {
-                setFilter(cat.id);
+                setFilter(id);
                 setHasFiltered(true);
               }}
               aria-pressed={selected}
@@ -149,7 +146,7 @@ export default function Projects() {
                   : "border-white/10 text-slate-400 hover:border-white/20 hover:text-white"
               }`}
             >
-              {cat.label}
+              {t.projects.categories[id]}
               <span className={`ml-2 font-mono text-xs ${selected ? "text-accent-200" : "text-slate-400"}`}>{count}</span>
             </button>
           );
@@ -157,7 +154,7 @@ export default function Projects() {
       </div>
 
       <p className="sr-only" aria-live="polite">
-        {visible.length} projet{visible.length > 1 ? "s" : ""} affiché{visible.length > 1 ? "s" : ""}
+        {t.projects.count(visible.length)}
       </p>
 
       <ul key={filter} className={`grid gap-5 md:grid-cols-2 ${hasFiltered ? "filtering" : ""}`}>
@@ -174,9 +171,9 @@ export default function Projects() {
           className="inline-flex items-center gap-2 rounded-full border border-white/10 px-5 py-3 text-sm font-medium text-slate-300 transition-colors hover:border-white/25 hover:text-white"
         >
           <TechIcon name="GitHub" size={16} />
-          Tous mes dépôts sur GitHub
+          {t.projects.allRepos}
           <ArrowUpRight size={15} aria-hidden="true" />
-          <span className="sr-only">(nouvel onglet)</span>
+          <span className="sr-only">{t.ui.newTab}</span>
         </a>
       </div>
     </Section>

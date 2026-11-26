@@ -8,16 +8,19 @@ import Skills from "./components/Skills";
 import Education from "./components/Education";
 import UnderTheHood from "./components/UnderTheHood";
 import Contact, { CvBand } from "./components/Contact";
-import { person } from "./data/profile";
+import { ContentProvider, useContent } from "./content";
+import { person } from "./content/shared";
 
-export default function App() {
+function Page() {
+  const t = useContent();
+
   return (
     <>
       <a
         href="#contenu"
         className="sr-only z-[60] rounded-full bg-accent-300 px-5 py-3 font-semibold text-ink-950 focus:not-sr-only focus:fixed focus:left-4 focus:top-4"
       >
-        Aller au contenu
+        {t.ui.skip}
       </a>
 
       <div aria-hidden="true" className="pointer-events-none absolute inset-x-0 top-0 -z-0 h-[70rem] overflow-hidden">
@@ -43,14 +46,22 @@ export default function App() {
       <footer className="mt-16 border-t border-white/[0.06]">
         <div className="mx-auto flex max-w-6xl flex-col gap-4 px-5 py-8 text-sm text-slate-400 sm:flex-row sm:items-center sm:justify-between sm:px-8">
           <p>
-            © {person.name} · Conçu et développé par mes soins avec React, Vite et Tailwind CSS.
+            © {person.name} · {t.ui.footer}
           </p>
           <a href="#top" className="inline-flex items-center gap-2 text-slate-400 hover:text-white">
-            Haut de page
+            {t.ui.backToTop}
             <ArrowUp size={14} aria-hidden="true" />
           </a>
         </div>
       </footer>
     </>
+  );
+}
+
+export default function App({ locale = "fr" }) {
+  return (
+    <ContentProvider locale={locale}>
+      <Page />
+    </ContentProvider>
   );
 }

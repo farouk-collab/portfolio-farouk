@@ -1,20 +1,18 @@
 import { ArrowUpRight } from "lucide-react";
-import { site, underTheHood } from "../data/profile";
+import { useContent } from "../content";
+import { site, underTheHoodIcons } from "../content/shared";
 import { uiIcons } from "../lib/icons";
 import { Card, Reveal, Section } from "./ui";
 
 export default function UnderTheHood() {
+  const t = useContent();
+  const u = t.underTheHood;
+
   return (
-    <Section
-      id="sous-le-capot"
-      index="06"
-      eyebrow="Sous le capot"
-      title="Ce site est lui-même un projet DevOps."
-      intro="Un portfolio est aussi une preuve : sécurité, CI, conteneurisation et performance sont appliquées ici, et tout est vérifiable dans le dépôt."
-    >
+    <Section id="sous-le-capot" index="06" eyebrow={u.eyebrow} title={u.title} intro={u.intro}>
       <div className="grid gap-px overflow-hidden rounded-2xl border border-white/[0.07] bg-white/[0.07] sm:grid-cols-2 lg:grid-cols-3">
-        {underTheHood.map((item, i) => {
-          const Icon = uiIcons[item.icon];
+        {u.items.map((item, i) => {
+          const Icon = uiIcons[underTheHoodIcons[i]];
           return (
             <Reveal key={item.title} delay={(i % 3) * 0.05} className="bg-ink-950">
               <div className="h-full p-6 sm:p-7">
@@ -37,9 +35,9 @@ export default function UnderTheHood() {
             rel="noopener noreferrer"
             className="inline-flex items-center gap-2 text-sm font-semibold text-accent-200 hover:text-white"
           >
-            Voir le dépôt
+            {u.repoLink}
             <ArrowUpRight size={15} aria-hidden="true" />
-            <span className="sr-only">(nouvel onglet)</span>
+            <span className="sr-only">{t.ui.newTab}</span>
           </a>
         </Card>
       </Reveal>

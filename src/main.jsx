@@ -5,11 +5,12 @@ import "@fontsource-variable/space-grotesk";
 import "@fontsource-variable/jetbrains-mono";
 import "./index.css";
 import App from "./App";
+import { localeFromPath } from "./content";
 
 const container = document.getElementById("root");
 const app = (
   <StrictMode>
-    <App />
+    <App locale={localeFromPath(window.location.pathname)} />
   </StrictMode>
 );
 
