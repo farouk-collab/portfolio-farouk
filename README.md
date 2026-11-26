@@ -43,7 +43,7 @@ scripts/
 
 ## Sécurité
 
-- CSP stricte (`script-src 'self'`, aucune origine tierce), `frame-ancestors 'none'`, HSTS, COOP/CORP,
+- CSP stricte (`script-src 'self'`, `style-src 'self'` sans `unsafe-inline`, aucune origine tierce), `frame-ancestors 'none'`, HSTS, COOP/CORP,
   `Referrer-Policy`, `Permissions-Policy` — définis dans `render.yaml` et dans `docker/`.
 - Polices, logos et médias auto-hébergés : aucune requête vers un CDN, aucune fuite d'IP des visiteurs.
 - Coordonnées réduites au strict nécessaire sur la page (email, LinkedIn, GitHub).
@@ -70,7 +70,10 @@ scripts/
 
 Le déploiement est donc entièrement automatique : une PR fusionnée sur `main` part en production
 uniquement si toute la chaîne est verte, et le job échoue si la production ne sert pas le bon commit
-ou perd un en-tête de sécurité. Déploiement manuel de secours :
+ou perd un en-tête de sécurité. **Surveillance** : `.github/workflows/uptime.yml` contrôle la production toutes les 30 minutes (pages, CV,
+en-têtes de sécurité, CSP sans `unsafe-inline`) et ouvre une issue « incident » en cas de problème.
+
+Déploiement manuel de secours :
 `render deploys create srv-d7hb2mm7r5hc73boo5g0 --wait` (CLI Render).
 
 Le service Render est configuré dans le tableau de bord ; `render.yaml` documente cette configuration

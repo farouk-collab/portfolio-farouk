@@ -158,8 +158,7 @@ export default function Hero() {
       </div>
 
       <dl
-        className="mt-16 grid grid-cols-2 overflow-hidden rounded-2xl border border-white/[0.07] bg-white/[0.07] lg:mt-20 lg:grid-cols-4"
-        style={{ gap: "1px" }}
+        className="mt-16 grid grid-cols-2 gap-px overflow-hidden rounded-2xl border border-white/[0.07] bg-white/[0.07] lg:mt-20 lg:grid-cols-4"
       >
         {t.hero.facts.map((fact) => (
           <div key={fact.label} className="bg-ink-950 p-5 sm:p-6">

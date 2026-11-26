@@ -83,11 +83,7 @@ export function Card({ className = "", children, as: Tag = "div", spotlight = fa
       {spotlight ? (
         <span
           aria-hidden="true"
-          className="pointer-events-none absolute inset-0 -z-10 opacity-0 transition-opacity duration-300 group-hover/spot:opacity-100"
-          style={{
-            background:
-              "radial-gradient(380px circle at var(--mx, 50%) var(--my, 0%), rgb(94 234 212 / 0.09), transparent 65%)",
-          }}
+          className="spotlight-glow pointer-events-none absolute inset-0 -z-10 opacity-0 transition-opacity duration-300 group-hover/spot:opacity-100"
         />
       ) : null}
       {children}

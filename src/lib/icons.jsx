@@ -24,7 +24,6 @@ import {
   Wrench,
 } from "lucide-react";
 import spriteUrl from "../assets/tech-icons.svg";
-import brandColors from "../assets/brand-colors.json";
 import { brands } from "./brands-map";
 
 // Outils sans logo de marque disponible : pictogramme générique cohérent.
@@ -73,9 +72,10 @@ export function TechIcon({ name, size = 16, className = "" }) {
   return <Fallback aria-hidden="true" size={size} className={className} strokeWidth={1.8} />;
 }
 
-export function brandColor(name) {
+// Classe de couleur de marque (définie dans assets/brand-colors.css, générée au build).
+function brandClass(name) {
   const slug = brands[name];
-  return slug ? brandColors[slug] : "var(--color-accent-300)";
+  return slug ? `brand-${slug}` : "brand-default";
 }
 
 export function TechChip({ name, size = "md" }) {
@@ -85,8 +85,7 @@ export function TechChip({ name, size = "md" }) {
   };
   return (
     <span
-      style={{ "--brand": brandColor(name) }}
-      className={`group/chip inline-flex items-center rounded-full border border-white/[0.08] bg-white/[0.03] font-medium text-slate-300 transition-colors hover:border-white/20 hover:text-white ${sizes[size]}`}
+      className={`${brandClass(name)} group/chip inline-flex items-center rounded-full border border-white/[0.08] bg-white/[0.03] font-medium text-slate-300 transition-colors hover:border-white/20 hover:text-white ${sizes[size]}`}
     >
       <TechIcon
         name={name}
