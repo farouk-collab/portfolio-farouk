@@ -68,6 +68,11 @@ scripts/
 3. Sur `main` uniquement : déclenchement du déploiement Render (secret `RENDER_DEPLOY_HOOK`),
    attente de la mise en ligne du commit exact (`<meta name="build-commit">`), puis vérification de la production.
 
+Le déploiement est donc entièrement automatique : une PR fusionnée sur `main` part en production
+uniquement si toute la chaîne est verte, et le job échoue si la production ne sert pas le bon commit
+ou perd un en-tête de sécurité. Déploiement manuel de secours :
+`render deploys create srv-d7hb2mm7r5hc73boo5g0 --wait` (CLI Render).
+
 Le service Render est configuré dans le tableau de bord ; `render.yaml` documente cette configuration
 (build, Node 22, redirections, en-têtes).
 
