@@ -19,7 +19,10 @@ npm run preview    # sert dist/ en local
 
 ```text
 src/
-├── data/profile.js        # tout le contenu (aligné sur le CV) : une seule source de vérité
+├── content/
+│   ├── shared.js          # données communes : liens, médias, stacks, dates
+│   ├── fr.js / en.js      # tous les textes, par langue (site bilingue : / et /en/)
+│   └── index.jsx          # contexte de langue (useContent)
 ├── components/            # Header, Hero, Profile, Experience, Projects, Skills, Education…
 ├── lib/icons.jsx          # logos de technos (sprite SVG) + pictogrammes de repli
 ├── lib/brands-map.js      # nom de techno -> identifiant simple-icons
@@ -31,7 +34,7 @@ scripts/
 └── prerender.mjs          # injecte le HTML pré-rendu, la CSS critique et les preloads de polices
 ```
 
-**Mettre à jour le contenu** : modifier uniquement `src/data/profile.js`.
+**Mettre à jour le contenu** : textes dans `src/content/fr.js` et `src/content/en.js`, données communes dans `src/content/shared.js`.
 **Mettre à jour le CV** : remplacer `public/cv/ayinde-farouk-salami-cv.pdf` (même nom, l'URL reste stable).
 
 ## Sécurité
@@ -55,9 +58,12 @@ scripts/
 `.github/workflows/ci.yml` à chaque push et PR :
 
 1. `npm ci` → lint → build + pré-rendu → vérification du HTML statique → budget de poids → `npm audit`
-2. Build de l'image Docker + test de fumée (en-têtes de sécurité, contenu, vraie 404)
+2. Build de l'image Docker + test de fumée (en-têtes de sécurité, contenu FR/EN, vraie 404)
+3. Sur `main` uniquement : déclenchement du déploiement Render (secret `RENDER_DEPLOY_HOOK`),
+   attente de la mise en ligne du commit exact (`<meta name="build-commit">`), puis vérification de la production.
 
-Le déploiement est fait par Render à chaque push sur `main` (`render.yaml`).
+Le service Render est configuré dans le tableau de bord ; `render.yaml` documente cette configuration
+(build, Node 22, redirections, en-têtes).
 
 ## Docker
 

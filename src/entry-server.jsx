@@ -1,11 +1,14 @@
 import { StrictMode } from "react";
 import { renderToString } from "react-dom/server";
 import App from "./App";
+import { locales } from "./content";
 
-export function render() {
+export { locales };
+
+export function render(locale) {
   return renderToString(
     <StrictMode>
-      <App />
+      <App locale={locale} />
     </StrictMode>,
   );
 }

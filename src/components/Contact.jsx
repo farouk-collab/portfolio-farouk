@@ -1,16 +1,18 @@
 import { useEffect, useState } from "react";
 import { ArrowUpRight, Check, Copy, Download, ExternalLink, Mail } from "lucide-react";
-import { person } from "../data/profile";
+import { useContent } from "../content";
+import { person } from "../content/shared";
 import { TechIcon } from "../lib/icons";
 import { ButtonLink, Card, Reveal, Section } from "./ui";
 
 function CopyEmail() {
+  const t = useContent();
   const [copied, setCopied] = useState(false);
 
   useEffect(() => {
     if (!copied) return undefined;
-    const t = setTimeout(() => setCopied(false), 2200);
-    return () => clearTimeout(t);
+    const timer = setTimeout(() => setCopied(false), 2200);
+    return () => clearTimeout(timer);
   }, [copied]);
 
   const copy = async () => {
@@ -28,39 +30,38 @@ function CopyEmail() {
       onClick={copy}
       className="inline-flex items-center gap-2 rounded-full border border-white/12 px-4 py-2.5 text-sm font-medium text-slate-200 transition-colors hover:border-white/25 hover:text-white"
     >
-      {copied ? <Check size={15} aria-hidden="true" className="text-emerald-300" /> : <Copy size={15} aria-hidden="true" />}
-      <span aria-live="polite">{copied ? "Adresse copiée" : "Copier l'adresse"}</span>
+      {copied ? (
+        <Check size={15} aria-hidden="true" className="text-emerald-300" />
+      ) : (
+        <Copy size={15} aria-hidden="true" />
+      )}
+      <span aria-live="polite">{copied ? t.contact.copied : t.contact.copy}</span>
     </button>
   );
 }
 
 export function CvBand() {
+  const t = useContent();
+
   return (
-    <Reveal as="section" aria-label="Curriculum vitae" className="py-10">
+    <Reveal as="section" aria-label={t.cv.label} className="py-10">
       <Card className="relative overflow-hidden p-8 sm:p-10">
-        <div
-          aria-hidden="true"
-          className="absolute -right-24 -top-24 h-72 w-72 rounded-full bg-accent-300/10 blur-3xl"
-        />
+        <div aria-hidden="true" className="absolute -right-24 -top-24 h-72 w-72 rounded-full bg-accent-300/10 blur-3xl" />
         <div className="relative flex flex-col gap-8 md:flex-row md:items-center md:justify-between">
           <div className="max-w-xl">
-            <p className="font-mono text-xs uppercase tracking-[0.22em] text-accent-300">Curriculum vitae</p>
-            <h2 className="mt-3 font-display text-2xl font-semibold text-white sm:text-3xl">
-              Tout mon parcours sur une page.
-            </h2>
-            <p className="mt-3 text-slate-400">
-              Format PDF, une page · mis à jour en {person.cvUpdated}.
-            </p>
+            <p className="font-mono text-xs uppercase tracking-[0.22em] text-accent-300">{t.cv.label}</p>
+            <h2 className="mt-3 font-display text-2xl font-semibold text-white sm:text-3xl">{t.cv.title}</h2>
+            <p className="mt-3 text-slate-400">{t.cv.meta}</p>
           </div>
           <div className="flex flex-wrap gap-3">
             <ButtonLink href={person.cv} download>
               <Download size={16} aria-hidden="true" />
-              Télécharger
+              {t.cv.download}
             </ButtonLink>
             <ButtonLink href={person.cv} target="_blank" rel="noopener" variant="secondary">
-              Ouvrir
+              {t.cv.open}
               <ExternalLink size={15} aria-hidden="true" />
-              <span className="sr-only">(nouvel onglet)</span>
+              <span className="sr-only">{t.ui.newTab}</span>
             </ButtonLink>
           </div>
         </div>
@@ -70,24 +71,29 @@ export function CvBand() {
 }
 
 export default function Contact() {
+  const t = useContent();
+  const c = t.contact;
   const links = [
-    { label: "LinkedIn", value: "Ayinde Farouk Salami", href: person.linkedin, icon: <span aria-hidden="true" className="font-display font-bold">in</span> },
+    {
+      label: "LinkedIn",
+      value: person.name,
+      href: person.linkedin,
+      icon: (
+        <span aria-hidden="true" className="font-display font-bold">
+          in
+        </span>
+      ),
+    },
     { label: "GitHub", value: person.githubHandle, href: person.github, icon: <TechIcon name="GitHub" size={18} /> },
   ];
 
   return (
-    <Section
-      id="contact"
-      index="07"
-      eyebrow="Contact"
-      title="Construisons votre prochaine pipeline de données."
-      intro="Disponible immédiatement pour une alternance Data Engineer / MLOps, en présentiel ou en télétravail. Je réponds rapidement par email."
-    >
+    <Section id="contact" index="07" eyebrow={c.eyebrow} title={c.title} intro={c.intro}>
       <div className="grid gap-5 lg:grid-cols-[1.4fr_1fr]">
         <Reveal>
           <Card className="h-full p-7 sm:p-9">
             <Mail size={22} className="text-accent-200" aria-hidden="true" />
-            <p className="mt-5 text-sm text-slate-400">Email</p>
+            <p className="mt-5 text-sm text-slate-400">{c.emailLabel}</p>
             <a
               href={`mailto:${person.email}`}
               className="mt-1 block break-all font-display text-2xl font-semibold text-white transition-colors hover:text-accent-200 sm:text-3xl"
@@ -95,8 +101,8 @@ export default function Contact() {
               {person.email}
             </a>
             <div className="mt-7 flex flex-wrap gap-3">
-              <ButtonLink href={`mailto:${person.email}?subject=Alternance%20Data%20Engineer%20%2F%20MLOps`}>
-                Écrire un email
+              <ButtonLink href={`mailto:${person.email}?subject=${encodeURIComponent(c.subject)}`}>
+                {c.write}
                 <ArrowUpRight size={16} aria-hidden="true" />
               </ButtonLink>
               <CopyEmail />
@@ -125,7 +131,7 @@ export default function Contact() {
                   aria-hidden="true"
                   className="text-slate-400 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-accent-200"
                 />
-                <span className="sr-only">(nouvel onglet)</span>
+                <span className="sr-only">{t.ui.newTab}</span>
               </a>
             </Reveal>
           ))}

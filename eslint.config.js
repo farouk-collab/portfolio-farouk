@@ -19,7 +19,7 @@ export default defineConfig([
     },
   },
   {
-    files: ["src/lib/**/*.jsx", "src/components/ui.jsx", "src/entry-server.jsx"],
+    files: ["src/lib/**/*.jsx", "src/content/**/*.jsx", "src/components/ui.jsx", "src/entry-server.jsx"],
     rules: { "react-refresh/only-export-components": "off" },
   },
   {

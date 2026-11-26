@@ -1,11 +1,14 @@
 import { useEffect, useState } from "react";
 import { Download, Menu, X } from "lucide-react";
-import { navItems, person } from "../data/profile";
+import { useContent } from "../content";
+import { person, sectionIds } from "../content/shared";
 
 export default function Header() {
+  const t = useContent();
   const [open, setOpen] = useState(false);
   const [active, setActive] = useState("");
   const [scrolled, setScrolled] = useState(false);
+  const navItems = sectionIds.map((id, i) => ({ id, label: t.nav[i] }));
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 8);
@@ -15,7 +18,7 @@ export default function Header() {
 
   // Met en évidence la section visible dans la navigation.
   useEffect(() => {
-    const sections = navItems.map((item) => document.getElementById(item.id)).filter(Boolean);
+    const sections = sectionIds.map((id) => document.getElementById(id)).filter(Boolean);
     const observer = new IntersectionObserver(
       (entries) => {
         const visible = entries.filter((e) => e.isIntersecting);
@@ -50,11 +53,11 @@ export default function Header() {
           </span>
           <span className="sr-only leading-tight sm:not-sr-only sm:block">
             <span className="block font-display text-[0.95rem] font-semibold text-white">{person.name}</span>
-            <span className="block text-xs text-slate-400">Data Engineer / MLOps</span>
+            <span className="block text-xs text-slate-400">{t.ui.roleShort}</span>
           </span>
         </a>
 
-        <nav aria-label="Navigation principale" className="hidden lg:block">
+        <nav aria-label={t.ui.navLabel} className="hidden lg:block">
           <ul className="flex items-center gap-1">
             {navItems.map((item) => (
               <li key={item.id}>
@@ -74,6 +77,16 @@ export default function Header() {
 
         <div className="flex items-center gap-2">
           <a
+            href={t.ui.lang.href}
+            hrefLang={t.ui.lang.hreflang}
+            lang={t.ui.lang.hreflang}
+            title={t.ui.lang.label}
+            className="grid h-10 min-w-10 place-items-center rounded-full border border-white/10 px-3 font-mono text-xs font-semibold text-slate-300 transition-colors hover:border-white/25 hover:text-white"
+          >
+            <span aria-hidden="true">{t.ui.lang.short}</span>
+            <span className="sr-only">{t.ui.lang.label}</span>
+          </a>
+          <a
             href={person.cv}
             download
             className="inline-flex items-center gap-2 rounded-full border border-accent-300/30 bg-accent-300/10 px-4 py-2 text-sm font-semibold text-accent-200 transition-colors hover:bg-accent-300/20"
@@ -86,7 +99,7 @@ export default function Header() {
             onClick={() => setOpen((v) => !v)}
             aria-expanded={open}
             aria-controls="menu-mobile"
-            aria-label={open ? "Fermer le menu" : "Ouvrir le menu"}
+            aria-label={open ? t.ui.closeMenu : t.ui.openMenu}
             className="grid h-10 w-10 place-items-center rounded-full border border-white/10 text-slate-200 lg:hidden"
           >
             {open ? <X size={18} aria-hidden="true" /> : <Menu size={18} aria-hidden="true" />}
@@ -95,7 +108,7 @@ export default function Header() {
       </div>
 
       {open ? (
-        <nav id="menu-mobile" aria-label="Navigation mobile" className="border-t border-white/[0.06] lg:hidden">
+        <nav id="menu-mobile" aria-label={t.ui.mobileNavLabel} className="border-t border-white/[0.06] lg:hidden">
           <ul className="mx-auto grid max-w-6xl gap-1 px-5 py-4 sm:px-8">
             {navItems.map((item) => (
               <li key={item.id}>

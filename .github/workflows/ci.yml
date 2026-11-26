@@ -40,6 +40,9 @@ jobs:
       - name: Vérification du rendu statique
         run: |
           grep -q "Des données fiables" dist/index.html
+          grep -q '<html lang="fr">' dist/index.html
+          grep -q "Reliable data" dist/en/index.html
+          grep -q '<html lang="en">' dist/en/index.html
           grep -q "ayinde-farouk-salami-cv.pdf" dist/index.html
           test -f dist/cv/ayinde-farouk-salami-cv.pdf
 
@@ -80,5 +83,56 @@ jobs:
           grep -qi "content-security-policy" headers.txt
           grep -qi "x-frame-options: DENY" headers.txt
           curl -fs http://localhost:8080/ | grep -q "Des données fiables"
+          curl -fs http://localhost:8080/en/ | grep -q "Reliable data"
+          curl -fsI http://localhost:8080/en/ | grep -qi "content-security-policy"
           test "$(curl -s -o /dev/null -w '%{http_code}' http://localhost:8080/n-existe-pas)" = "404"
           docker rm -f web
+
+  deploy:
+    name: Déploiement Render + vérification prod
+    runs-on: ubuntu-latest
+    needs: [quality, docker]
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    timeout-minutes: 15
+    environment:
+      name: production
+      url: https://portfolio-farouk.onrender.com
+    env:
+      SITE: https://portfolio-farouk.onrender.com
+      RENDER_DEPLOY_HOOK: ${{ secrets.RENDER_DEPLOY_HOOK }}
+    steps:
+      - name: Déclenchement du déploiement
+        run: |
+          if [ -z "$RENDER_DEPLOY_HOOK" ]; then
+            echo "::warning::Secret RENDER_DEPLOY_HOOK absent : déploiement et vérification de la prod ignorés."
+          else
+            curl -fsS -X POST "$RENDER_DEPLOY_HOOK" > /dev/null
+            echo "Déploiement demandé à Render."
+          fi
+
+      - name: Attente de la mise en ligne du commit
+        if: env.RENDER_DEPLOY_HOOK != ''
+        run: |
+          for i in $(seq 1 60); do
+            live=$(curl -fs "$SITE/?ci=$GITHUB_RUN_ID-$i" | grep -o 'name="build-commit" content="[^"]*"' | cut -d'"' -f4 || true)
+            if [ "$live" = "$GITHUB_SHA" ]; then echo "Commit $GITHUB_SHA en ligne."; exit 0; fi
+            echo "En ligne : ${live:-inconnu} — attente ($i/60)"
+            sleep 10
+          done
+          echo "::error::Le commit n'est pas en production après 10 minutes."
+          exit 1
+
+      - name: Vérification de la production
+        if: env.RENDER_DEPLOY_HOOK != ''
+        run: |
+          curl -fsI "$SITE/" | tee headers.txt
+          for h in content-security-policy x-frame-options strict-transport-security x-content-type-options referrer-policy permissions-policy cross-origin-opener-policy; do
+            grep -qi "^$h:" headers.txt || { echo "::error::En-tête manquant : $h"; exit 1; }
+          done
+          curl -fs "$SITE/" | grep -q "Des données fiables"
+          curl -fs "$SITE/en/" | grep -q "Reliable data"
+          curl -fsI "$SITE/en/" | grep -qi "^content-security-policy:"
+          test "$(curl -s -o /dev/null -w '%{http_code}' "$SITE/cv/ayinde-farouk-salami-cv.pdf")" = "200"
+          test "$(curl -s -o /dev/null -w '%{http_code}' "$SITE/cv/cv-farouk.pdf")" = "301"
+          test "$(curl -s -o /dev/null -w '%{http_code}' "$SITE/n-existe-pas")" = "404"
+          echo "Production conforme."

@@ -1,37 +1,71 @@
-// Injecte le rendu serveur de l'application dans dist/index.html (génération statique).
-import { readFile, readdir, rm, writeFile } from "node:fs/promises";
+// Génération statique : une page HTML pré-rendue par langue (/ et /en/),
+// avec CSS critique intégrée, polices préchargées et métadonnées localisées.
+import { mkdir, readFile, readdir, rm, writeFile } from "node:fs/promises";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import path from "node:path";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
-const indexPath = path.join(root, "dist", "index.html");
-const serverEntry = path.join(root, "dist-ssr", "entry-server.js");
+const dist = path.join(root, "dist");
+const SITE = "https://portfolio-farouk.onrender.com";
 
-const { render } = await import(pathToFileURL(serverEntry).href);
-const template = await readFile(indexPath, "utf8");
+const { render, locales } = await import(pathToFileURL(path.join(root, "dist-ssr", "entry-server.js")).href);
+let template = await readFile(path.join(dist, "index.html"), "utf8");
 
 if (!template.includes("<!--app-html-->")) {
   throw new Error("Marqueur <!--app-html--> introuvable dans dist/index.html");
 }
 
-let html = template.replace("<!--app-html-->", render());
+// CSS intégrée (supprime une requête bloquante avant le premier affichage).
+const cssLink = template.match(/<link rel="stylesheet"[^>]*href="(\/assets\/[^"]+\.css)"[^>]*>/);
+if (cssLink) {
+  const css = await readFile(path.join(dist, cssLink[1]), "utf8");
+  template = template.replace(cssLink[0], () => `<style>${css}</style>`);
+}
 
-// CSS intégrée au HTML (≈ 9 Ko gzip) : supprime une requête bloquante avant le premier affichage.
-// Préchargement des deux polices visibles au-dessus de la ligne de flottaison (évite le décalage de mise en page).
-const assets = await readdir(path.join(root, "dist", "assets"));
+// Préchargement des deux polices visibles au-dessus de la ligne de flottaison.
+const assets = await readdir(path.join(dist, "assets"));
 const preloads = ["space-grotesk-latin-wght-normal", "inter-latin-wght-normal"]
   .map((prefix) => assets.find((f) => f.startsWith(`${prefix}-`) && f.endsWith(".woff2")))
   .filter(Boolean)
   .map((f) => `<link rel="preload" href="/assets/${f}" as="font" type="font/woff2" crossorigin>`)
   .join("");
-html = html.replace("</title>", `</title>${preloads}`);
 
-const cssLink = html.match(/<link rel="stylesheet"[^>]*href="(\/assets\/[^"]+\.css)"[^>]*>/);
-if (cssLink) {
-  const css = await readFile(path.join(root, "dist", cssLink[1]), "utf8");
-  html = html.replace(cssLink[0], () => `<style>${css}</style>`);
+// Commit déployé (Render fournit RENDER_GIT_COMMIT) : la CI s'en sert pour vérifier la production.
+const commit = (process.env.RENDER_GIT_COMMIT || process.env.GITHUB_SHA || "local").replace(/[^\w.-]/g, "");
+
+const alternates = Object.values(locales)
+  .map((l) => `<link rel="alternate" hreflang="${l.locale}" href="${SITE}${l.meta.path}">`)
+  .concat(`<link rel="alternate" hreflang="x-default" href="${SITE}/">`)
+  .join("");
+
+const escapeAttr = (s) => s.replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/</g, "&lt;");
+
+function setMeta(html, attr, key, value) {
+  const re = new RegExp(`(<meta ${attr}="${key}" content=")[^"]*(")`);
+  if (!re.test(html)) throw new Error(`Balise meta ${attr}="${key}" introuvable`);
+  return html.replace(re, (_, a, b) => `${a}${escapeAttr(value)}${b}`);
 }
-await writeFile(indexPath, html);
-await rm(path.join(root, "dist-ssr"), { recursive: true, force: true });
 
-console.log(`Pré-rendu OK : ${(Buffer.byteLength(html) / 1024).toFixed(1)} Ko écrits dans dist/index.html`);
+for (const content of Object.values(locales)) {
+  const { locale, meta } = content;
+  const url = `${SITE}${meta.path}`;
+  let html = template
+    .replace(/<html lang="[^"]*">/, `<html lang="${locale}">`)
+    .replace(/<title>[^<]*<\/title>/, `<title>${escapeAttr(meta.title)}</title>`)
+    .replace(/<link rel="canonical" href="[^"]*" \/>/, `<link rel="canonical" href="${url}" />`)
+    .replace("</title>", `</title>${preloads}<meta name="build-commit" content="${commit}">${alternates}`)
+    .replace("<!--app-html-->", render(locale));
+
+  html = setMeta(html, "name", "description", meta.description);
+  html = setMeta(html, "property", "og:title", meta.title);
+  html = setMeta(html, "property", "og:description", meta.ogDescription);
+  html = setMeta(html, "property", "og:url", url);
+  html = setMeta(html, "property", "og:locale", meta.ogLocale);
+
+  const outDir = path.join(dist, meta.path);
+  await mkdir(outDir, { recursive: true });
+  await writeFile(path.join(outDir, "index.html"), html);
+  console.log(`Pré-rendu ${locale} OK : ${meta.path} (${(Buffer.byteLength(html) / 1024).toFixed(1)} Ko)`);
+}
+
+await rm(path.join(root, "dist-ssr"), { recursive: true, force: true });
